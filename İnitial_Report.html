@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 1 Report — Seda Kutluata</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif; background: #f5f5f3; color: #1a1a1a; padding: 2rem 1.5rem; max-width: 780px; margin: 0 auto; }
+  .card { background: #fff; border: 1px solid rgba(0,0,0,0.1); border-radius: 14px; padding: 2rem; margin-bottom: 1.25rem; }
+  .header-row { display: flex; align-items: center; gap: 16px; margin-bottom: 1.5rem; }
+  .avatar { width: 52px; height: 52px; border-radius: 50%; background: #E1F5EE; display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 600; color: #085041; flex-shrink: 0; }
+  h1 { font-size: 22px; font-weight: 600; color: #1a1a1a; }
+  .sub { font-size: 13px; color: #666; margin-top: 3px; }
+  .pills { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 1.5rem; }
+  .pill { font-size: 12px; font-weight: 600; padding: 4px 12px; border-radius: 999px; border: 1px solid; }
+  .p-teal { background:#E1F5EE; color:#085041; border-color:#5DCAA5; }
+  .p-blue { background:#E6F1FB; color:#0C447C; border-color:#85B7EB; }
+  .p-amber { background:#FAEEDA; color:#633806; border-color:#EF9F27; }
+  hr { border:none; border-top:1px solid rgba(0,0,0,0.08); margin:1.5rem 0; }
+  .sec-label { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.09em; color:#888; margin-bottom:14px; }
+  .letter { font-size:15px; line-height:1.9; color:#1a1a1a; }
+  .letter p { margin-bottom:1.1rem; }
+  .letter p:last-child { margin-bottom:0; }
+
+  .skill-row { display:flex; align-items:flex-start; gap:12px; padding:13px 0; border-bottom:1px solid rgba(0,0,0,0.07); }
+  .skill-row:last-child { border-bottom:none; padding-bottom:0; }
+  .sico { width:36px; height:36px; border-radius:9px; display:flex; align-items:center; justify-content:center; font-size:16px; flex-shrink:0; }
+  .ic-teal{background:#E1F5EE;} .ic-blue{background:#E6F1FB;} .ic-purple{background:#EEEDFE;} .ic-amber{background:#FAEEDA;} .ic-coral{background:#FAECE7;}
+  .sname { font-size:15px; font-weight:600; }
+  .snote { font-size:13px; color:#555; margin-top:4px; line-height:1.6; }
+  .sbadge { flex-shrink:0; font-size:11px; font-weight:700; padding:4px 11px; border-radius:999px; margin-top:2px; }
+  .bg-green{background:#EAF3DE;color:#27500A;} .bg-amber{background:#FAEEDA;color:#633806;} .bg-red{background:#FCEBEB;color:#791F1F;}
+
+  .hw-item { display:flex; gap:14px; padding:13px 0; border-bottom:1px solid rgba(0,0,0,0.07); align-items:flex-start; }
+  .hw-item:last-child { border-bottom:none; padding-bottom:0; }
+  .hw-num { width:28px; height:28px; border-radius:50%; background:#f5f5f3; border:1px solid rgba(0,0,0,0.1); display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:700; color:#888; flex-shrink:0; margin-top:1px; }
+  .hw-title { font-size:15px; font-weight:600; }
+  .hw-desc { font-size:13px; color:#555; margin-top:5px; line-height:1.6; }
+  .hw-tag { display:inline-block; font-size:11px; font-weight:700; padding:3px 9px; border-radius:999px; margin-top:7px; }
+  .t-teal{background:#E1F5EE;color:#085041;} .t-blue{background:#E6F1FB;color:#0C447C;} .t-purple{background:#EEEDFE;color:#3C3489;} .t-amber{background:#FAEEDA;color:#633806;} .t-coral{background:#FAECE7;color:#712B13;}
+
+  .tip { background:#E1F5EE; border:1px solid #5DCAA5; border-radius:9px; padding:13px 16px; font-size:13px; color:#085041; line-height:1.65; }
+  .tip strong { font-weight:700; }
+  .warn { background:#FAEEDA; border:1px solid #EF9F27; border-radius:9px; padding:13px 16px; font-size:13px; color:#633806; line-height:1.65; }
+  .warn strong { font-weight:700; }
+  .sig { font-size:14px; color:#666; line-height:1.8; }
+  .sig-name { font-size:16px; font-weight:600; color:#1a1a1a; margin-top:4px; }
+
+  /* vocab */
+  .vtabs { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:18px; }
+  .vtab { font-size:13px; font-weight:600; padding:7px 15px; border-radius:999px; border:1px solid rgba(0,0,0,0.18); background:transparent; cursor:pointer; color:#555; transition:all 0.15s; }
+  .vtab:hover { background:#f5f5f3; }
+  .vtab.on { background:#1a1a1a; color:#fff; border-color:#1a1a1a; }
+  .vpanel { display:none; }
+  .vpanel.on { display:block; }
+  .vgrid { display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:9px; margin-bottom:18px; }
+  .vcard { background:#f9f9f7; border:1px solid rgba(0,0,0,0.09); border-radius:11px; padding:13px 15px; cursor:pointer; transition:border-color 0.15s; }
+  .vcard:hover { border-color:rgba(0,0,0,0.2); }
+  .vcard .front { display:block; } .vcard .back { display:none; }
+  .vcard.flipped .front { display:none; } .vcard.flipped .back { display:block; }
+  .vword { font-size:15px; font-weight:600; color:#1a1a1a; }
+  .vpos { font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:0.06em; color:#999; margin-top:3px; }
+  .vex { font-size:12px; color:#666; margin-top:7px; line-height:1.55; font-style:italic; }
+  .vwrong { font-size:12px; color:#A32D2D; margin-top:6px; line-height:1.5; }
+  .vright { font-size:12px; color:#27500A; margin-top:4px; line-height:1.5; }
+  .vtr { font-size:16px; font-weight:600; color:#0F6E56; }
+  .vtrhint { font-size:12px; color:#666; margin-top:5px; line-height:1.5; font-style:italic; }
+  .flip-hint { font-size:11px; color:#bbb; margin-top:9px; }
+  .vsub { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.08em; color:#999; margin:16px 0 9px; }
+  .vsub:first-child { margin-top:0; }
+
+  .ctable { width:100%; border-collapse:collapse; font-size:13px; }
+  .ctable th { text-align:left; font-weight:700; font-size:11px; text-transform:uppercase; letter-spacing:0.06em; color:#999; padding:7px 9px; border-bottom:1px solid rgba(0,0,0,0.09); }
+  .ctable td { padding:9px 9px; border-bottom:1px solid rgba(0,0,0,0.06); vertical-align:top; }
+  .ctable tr:last-child td { border-bottom:none; }
+  .cw { font-weight:600; color:#1a1a1a; } .ctr { color:#0F6E56; font-weight:600; } .cuse { font-size:12px; color:#888; } .cex { font-size:12px; color:#666; font-style:italic; }
+
+  @media(max-width:500px) {
+    body { padding:1rem; }
+    .card { padding:1.25rem; }
+    .vgrid { grid-template-columns:1fr 1fr; }
+    .ctable .cuse, .ctable .cex { display:none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="card">
+  <div class="header-row">
+    <div class="avatar">SK</div>
+    <div>
+      <h1>Lesson 1 report — Seda Kutluata</h1>
+      <p class="sub">Prepared by Bernice · April 2026</p>
+    </div>
+  </div>
+  <div class="pills">
+    <span class="pill p-teal">First lesson</span>
+    <span class="pill p-blue">Intermediate level</span>
+    <span class="pill p-amber">İTEP exam — Monday</span>
+  </div>
+  <hr>
+  <div class="sec-label">A note from Bernice</div>
+  <div class="letter">
+    <p>Hi Seda,</p>
+    <p>It was so lovely to meet you today! I really enjoyed our first session and I already feel like I have a good picture of who you are, what you need, and where we're heading together.</p>
+    <p>It's clear that you are in an exciting moment in your life — a new job you're settling into well, a little girl who has just turned one (happy birthday to Neva!), and now an exam on Monday on top of all of that. I want you to know that I think you are doing an incredible job managing everything, and your English is genuinely stronger than you give yourself credit for.</p>
+    <p>What I noticed most today is that your vocabulary is really solid and your listening is excellent — you followed everything I said without any difficulty at all, and that is not something every student can say. The main thing holding you back right now is not your English — it's your confidence in accessing what you already know quickly, especially when speaking. That is completely normal, and it is exactly what we are going to work on together.</p>
+    <p>Below you'll find a summary of where things stand across each exam section, your homework for this week, and a vocabulary list I've put together especially for you. Please do read it — it will help you go into Monday feeling prepared and calm.</p>
+    <p>You've got this. I'm rooting for you!</p>
+  </div>
+  <hr>
+  <div class="sec-label">Your İTEP exam — section by section</div>
+  <div class="skill-row">
+    <div class="sico ic-teal">🎧</div>
+    <div style="flex:1"><div class="sname">Listening</div><div class="snote">Your strongest section. You follow natural speech easily and don't need things repeated. Go into this part with confidence — it will settle your nerves for the rest of the exam.</div></div>
+    <span class="sbadge bg-green">Strong</span>
+  </div>
+  <div class="skill-row">
+    <div class="sico ic-blue">📄</div>
+    <div style="flex:1"><div class="sname">Reading</div><div class="snote">You read in English regularly at work — reports, papers, emails. Short and long texts with multiple choice. This should feel familiar. Take your time and trust yourself.</div></div>
+    <span class="sbadge bg-green">Comfortable</span>
+  </div>
+  <div class="skill-row">
+    <div class="sico ic-purple">📖</div>
+    <div style="flex:1"><div class="sname">Grammar</div><div class="snote">You already have practice materials — well done! Focus your review on perfect tenses before Monday. Even 20 minutes will make a real difference.</div></div>
+    <span class="sbadge bg-amber">Review tenses</span>
+  </div>
+  <div class="skill-row">
+    <div class="sico ic-amber">✍️</div>
+    <div style="flex:1"><div class="sname">Writing</div><div class="snote">You write in English at work regularly — great foundation. Watch out for prepositions (in / on / at) and subject vs object pronouns. Read your sentences out loud before submitting — your instinct is usually right.</div></div>
+    <span class="sbadge bg-amber">Check prepositions</span>
+  </div>
+  <div class="skill-row">
+    <div class="sico ic-coral">🎙️</div>
+    <div style="flex:1"><div class="sname">Speaking</div><div class="snote">I know this is your main worry, and I hear you. The challenge isn't your vocabulary — it's the split second of translating from Turkish before you speak. For Monday: slow down, breathe, and give yourself permission to pause. A short pause sounds confident. Rushing sounds nervous. We will work on this a lot together going forward.</div></div>
+    <span class="sbadge bg-red">Main focus</span>
+  </div>
+  <div class="tip" style="margin-top:16px"><strong>For every section on Monday:</strong> there is no penalty for wrong answers — always attempt every question, even if you're unsure. A guess is always better than a blank.</div>
+</div>
+
+<div class="card">
+  <div class="sec-label">Your homework this week</div>
+  <div class="hw-item">
+    <div class="hw-num">1</div>
+    <div>
+      <div class="hw-title">Perfect tenses — a quick review</div>
+      <div class="hw-desc">Focus on present perfect ("I have worked here for two years") and past perfect ("She had already left when I arrived"). Do one mock grammar section if you have time. Even 20 minutes will make a difference.</div>
+      <span class="hw-tag t-purple">Grammar</span>
+    </div>
+  </div>
+  <div class="hw-item">
+    <div class="hw-num">2</div>
+    <div>
+      <div class="hw-title">Prepositions — in / on / at</div>
+      <div class="hw-desc"><strong>at</strong> = specific point or time (at work, at 8am) &nbsp;·&nbsp; <strong>on</strong> = day or surface (on Monday, on the table) &nbsp;·&nbsp; <strong>in</strong> = inside or longer period (in the morning, in Ankara). Write 5 sentences from your daily life using each one.</div>
+      <span class="hw-tag t-blue">Writing</span>
+    </div>
+  </div>
+  <div class="hw-item">
+    <div class="hw-num">3</div>
+    <div>
+      <div class="hw-title">Speaking practice — talk to yourself!</div>
+      <div class="hw-desc">Every day before Monday, spend 5 minutes speaking out loud in English. Talk about your day, describe what Neva did, explain something from work. The goal is not to be perfect — it's to get your brain used to producing English without translating first. The car on your commute is a perfect place for this!</div>
+      <span class="hw-tag t-coral">Speaking</span>
+    </div>
+  </div>
+  <div class="hw-item">
+    <div class="hw-num">4</div>
+    <div>
+      <div class="hw-title">Put your vocabulary list somewhere visible</div>
+      <div class="hw-desc">Don't keep your word lists in a closed notebook — stick them on the fridge, beside your desk, or save a screenshot of the vocabulary section below on your phone. Passive exposure every day adds up more than you think.</div>
+      <span class="hw-tag t-teal">Vocabulary</span>
+    </div>
+  </div>
+  <div class="hw-item">
+    <div class="hw-num">5</div>
+    <div>
+      <div class="hw-title">Keep watching shows in English</div>
+      <div class="hw-desc">You already do this — keep it up! Try switching to English subtitles for just one episode this week. Even 20 minutes trains your brain to process English directly rather than going through Turkish first.</div>
+      <span class="hw-tag t-amber">Listening</span>
+    </div>
+  </div>
+  <hr>
+  <div class="tip"><strong>A final thought:</strong> The goal this week is not to learn everything — it's to arrive on Monday feeling calm, prepared, and like yourself. You are more ready than you feel right now. Trust that.</div>
+  <hr>
+  <div class="sig">With best wishes for Monday,<br><span class="sig-name">Bernice</span><br><span style="font-size:13px;color:#888">English tutor · Lesson 1 of your journey</span></div>
+</div>
+
+<div class="card">
+  <div class="sec-label">Your vocabulary list</div>
+  <div class="warn" style="margin-bottom:18px"><strong>How to use this list:</strong> Don't just read the words — read the example sentences and notice <em>how</em> and <em>when</em> each word is used. Tap any card to see the Turkish translation. The <strong>Context mistakes</strong> tab is especially important for you — it shows words you probably know but may use in the wrong situation.</div>
+
+  <div class="vtabs">
+    <button class="vtab on" onclick="vshow('everyday',this)">Everyday life</button>
+    <button class="vtab" onclick="vshow('work',this)">Work & engineering</button>
+    <button class="vtab" onclick="vshow('context',this)">Context mistakes</button>
+    <button class="vtab" onclick="vshow('exam',this)">Exam vocabulary</button>
+    <button class="vtab" onclick="vshow('connectors',this)">Connectors</button>
+  </div>
+
+  <div class="vpanel on" id="vp-everyday">
+    <div class="vsub">Family & daily life</div>
+    <div class="vgrid">
+      <div class="vcard" onclick="this.classList.toggle('flipped')"><div class="front"><div class="vword">to juggle</div><div class="vpos">verb</div><div class="vex">"She juggles work and motherhood every single day."</div><div class="flip-hint">tap for Turkish ↓</div></div><div class="back"><div class="vtr">idare etmek / dengelemek</div><div class="vtrhint">"Her gün işini ve anneliğini dengeli götürüyor."</div></div></div>
+      <div class="vcard" onclick="this.classList.toggle('flipped')"><div class="front"><div class="vword">exhausting</div><div class="vpos">adjective</div><div class="vex">"Having a one-year-old is exhausting but wonderful."</div><div class="flip-hint">tap for Turkish ↓</div></div><div class="back"><div class="vtr">yorucu / tüketici</div><div class="vtrhint">"Bir yaşında çocuğu olmak yorucu ama harika."</div></div></div>
+      <div class="vcard" onclick="this.classList.toggle('flipped')"><div class="front"><div class="vword">rewarding</div><div class="vpos">adjective</div><div class="vex">"It's tiring, but also incredibly rewarding."</div><div class="flip-hint">tap for Turkish ↓</div></div><div class="back"><div class="vtr">tatmin edici</div><div class="vtrhint">"Yorucu ama inanılmaz derecede tatmin edici."</div></div></div>
+      <div class="vcard" onclick="this.classList.toggle('flipped')"><div class="front"><div class="vword">milestone</div><div class="vpos">noun</div><div class="vex">"Her first steps were such a big milestone."</div><div class="flip-hint">tap for Turkish ↓</div></div><div class="back"><div class="vtr">dönüm noktası / önemli aşama</div><div class="vtrhint">"İlk adımları çok büyük bir dönüm noktasıydı."</div></div></div>
+      <div class="vcard" onclick="this.classList.toggle('flipped')"><div class="front"><div class="vword">routine</div><div class="vpos">noun</div><div class="vex">"We have a bedtime routine every night."</div><div class="flip-hint">tap for Turkish ↓</div></div><div class="back"><div class="vtr">rutin / alışkanlık</div><div class="vtrhint">"Her gece yatma zamanı rutinimiz var."</div></div></div>
+      <div class="vcard" onclick="this.classList.toggle('flipped')"><div class="front"><div class="vword">to manage</div><div class="vpos">verb</div><div class="vex">"How do you manage everything on your own?"</div><div class="flip-hint">tap for Turkish ↓</div></div><div class="back"><div class="vtr">başarmak / idare etmek</div><div class="vtrhint">"Her şeyi tek başına nasıl idare ediyorsun?"</div></div></div>
+      <div class="vcard" onclick="this.classList.toggle('flipped')"><div class="front"><div class="vword">grumpy</div><div class="vpos">adjective</div><div class="vex">"She's been a bit grumpy since her vaccinations."</div><div class="flip-hint">tap for Turkish ↓</div></div><div class="back"><div class="vtr">huysuz / somurtkan</div><div class="vtrhint">"Aşılarından beri biraz huysuz."</div></div></div>
+      <div class="vcard" onclick="this.classList.toggle('flipped')"><div class="front"><div class="vword">to settle in</div><div class="vpos">phrasal verb</div><div class="vex">"I've settled in really well at my new job."</div><div class="flip-hint">tap for Turkish ↓</div></div><div class="back"><div class="vtr">alışmak / yerleşmek</div><div class="vtrhint">"Yeni işime gerçekten çok iyi alıştım."</div></div></div>
+      <div class="vcard" onclick="this.classList.toggle('flipped')"><div class="front"><div class="vword">commute</div><div class="vpos">noun / verb</div><div class="vex">"My commute takes about 30 minutes by car."</div><div class="flip-hint">tap for Turkish ↓</div></div><div class="back"><div class="vtr">işe gidiş-geliş</div><div class="vtrhint">"İşe gidiş-gelişim arabayla yaklaşık 30 dakika."</div></div></div>
+      <div class="vcard" onclick="this.classList.toggle('flipped')"><div class="front"><div class="vword">welcoming</div><div class="vpos">adjective</div><div class="vex">"My new colleagues have been really welcoming."</div><div class="flip-hint">tap for Turkish ↓</div></div><div class="back"><div class="vtr">sıcakkanlı / misafirperver</div><div class="vtrhint">"Yeni iş arkadaşlarım gerçekten çok sıcak davrandı."</div></div></div>
+      <div class="vcard" onclick="this.classList.toggle('flipped')"><div class="front"><div class="vword">vaccination</div><div class="vpos">noun</div><div class="vex">"Neva had her one-year vaccinations this week."</div><div class="flip-hint">tap for Turkish ↓</div></div><div class="back"><div class="vtr">aşı / aşılama</div><div class="vtrhint">"Neva bu hafta bir yaş aşılarını oldu."</div></div></div>
+      <div class="vcard" onclick="this.classList.toggle('flipped')"><div class="front"><div class="vword">career advancement</div><div class="vpos">noun phrase</div><div class="vex">"This new job offers real career advancement."</div><div class="flip-hint">tap for Turkish ↓</div></div><div class="back"><div class="vtr">kariyer gelişimi / ilerleme</div><div class="vtrhint">"Bu yeni iş gerçek bir kariyer gelişimi sunuyor."</div></div></div>
+      <div class="vcard" onclick="this.classList.toggle('flipped')"><div class="front"><div class="vword">to overcome</div><div class="vpos">verb</div><div class="vex">"She worked hard to overcome her fear of speaking."</div><div class="flip-hint">tap for Turkish ↓</div></div><div class="back"><div class="vtr">üstesinden gelmek / aşmak</div><div class="vtrhint">"Konuşma korkusunu aşmak için çok çalıştı."</div></div></div>
+      <div class="vcard" onclick="this.classList.toggle('flipped')"><div class="front"><div class="vword">confidence</div><div class="vpos">noun</div><div class="vex">"With practice, your confidence will grow."</div><div class="flip-hint">tap for Turkish ↓</div></div><div class="back"><div class="vtr">özgüven / güven</div><div class="vtrhint">"Pratikle özgüvenin artacak."</div></div></div>
+      <div class="vcard" onclick="this.classList.toggle('flipped')"><div class="front"><div class="vword">supportive</div><div class="vpos">adjective</div><div class="vex">"My manager is very supportive of my development."</div><div class="flip-hint">tap for Turkish ↓</div></div><div class="back"><div class="vtr">destekleyici</div><div class="vtrhint">"Yöneticim gelişimim konusunda çok destekleyici."</div></div></div>
+    </div>
+  </div>
+
+  <div class="vpanel" id="vp-work">
+    <div class="vsub">Chemical engineering & workplace</div>
+    <div class="vgrid">
+      <div class="vcard" onclick="this.classList.toggle('flipped')"><div class="front"><div class="vword">research & development</div><div class="vpos">noun (R&amp;D)</div><div class="vex">"I work in the R&amp;D department."</div><div class="flip-hint">tap for Turkish ↓</div></div><div class="back"><div class="vtr">araştırma ve geliştirme</div><div class="vtrhint">"Ar-Ge departmanında çalışıyorum."</div></div></div>
+      <div class="vcard" onclick="this.classList.toggle('flipped')"><div class="front"><div class="vword">experiment</div><div class="vpos">noun</div><div class="vex">"The experiment gave us unexpected results."</div><div class="flip-hint">tap for Turkish ↓</div></div><div class="back"><div class="vtr">deney</div><div class="vtrhint">"Deney bize beklenmedik sonuçlar verdi."</div></div></div>
+      <div class="vcard" onclick="this.classList.toggle('flipped')"><div class="front"><div class="vword">findings</div><div class="vpos">noun (plural)</div><div class="vex">"Our findings suggest the formula needs adjusting."</div><div class="flip-hint">tap for Turkish ↓</div></div><div class="back"><div class="vtr">bulgular / sonuçlar</div><div class="vtrhint">"Bulgularımız formülün ayarlanması gerektiğini gösteriyor."</div></div></div>
+      <div class="vcard" onclick="this.classList.toggle('flipped')"><div class="front"><div class="vword">analysis</div><div class="vpos">noun</div><div class="vex">"The analysis showed high levels of sodium."</div><div class="flip-hint">tap for Turkish ↓</div></div><div class="back"><div class="vtr">analiz</div><div class="vtrhint">"Analiz yüksek sodyum seviyeleri gösterdi."</div></div></div>
+      <div class="vcard" onclick="this.classList.toggle('flipped')"><div class="front"><div class="vword">to monitor</div><div class="vpos">verb</div><div class="vex">"We monitor the temperature throughout the process."</div><div class="flip-hint">tap for Turkish ↓</div></div><div class="back"><div class="vtr">izlemek / takip etmek</div><div class="vtrhint">"Süreç boyunca sıcaklığı takip ediyoruz."</div></div></div>
+      <div class="vcard" onclick="this.classList.toggle('flipped')"><div class="front"><div class="vword">sample</div><div class="vpos">noun</div><div class="vex">"We tested three different samples in the lab."</div><div class="flip-hint">tap for Turkish ↓</div></div><div class="back"><div class="vtr">numune / örnek</div><div class="vtrhint">"Laboratuvarda üç farklı numuneyi test ettik."</div></div></div>
+      <div class="vcard" onclick="this.classList.toggle('flipped')"><div class="front"><div class="vword">to adjust</div><div class="vpos">verb</div><div class="vex">"We need to adjust the formula slightly."</div><div class="flip-hint">tap for Turkish ↓</div></div><div class="back"><div class="vtr">ayarlamak / düzenlemek</div><div class="vtrhint">"Formülü biraz ayarlamamız gerekiyor."</div></div></div>
+      <div class="vcard" onclick="this.classList.toggle('flipped')"><div class="front"><div class="vword">deadline</div><div class="vpos">noun</div><div class="vex">"The deadline for the report is Friday."</div><div class="flip-hint">tap for Turkish ↓</div></div><div class="back"><div class="vtr">son teslim tarihi</div><div class="vtrhint">"Raporun son teslim tarihi Cuma."</div></div></div>
+      <div class="vcard" onclick="this.classList.toggle('flipped')"><div class="front"><div class="vword">colleague</div><div class="vpos">noun</div><div class="vex">"My colleagues have been helpful from day one."</div><div class="flip-hint">tap for Turkish ↓</div></div><div class="back"><div class="vtr">iş arkadaşı / meslektaş</div><div class="vtrhint">"İş arkadaşlarım ilk günden itibaren yardımcı oldu."</div></div></div>
+      <div class="vcard" onclick="this.classList.toggle('flipped')"><div class="front"><div class="vword">to present</div><div class="vpos">verb</div><div class="vex">"I presented our results to the team last week."</div><div class="flip-hint">tap for Turkish ↓</div></div><div class="back"><div class="vtr">sunmak</div><div class="vtrhint">"Geçen hafta sonuçlarımızı ekibe sundum."</div></div></div>
+      <div class="vcard" onclick="this.classList.toggle('flipped')"><div class="front"><div class="vword">sub-team</div><div class="vpos">noun</div><div class="vex">"Each sub-team focuses on a different product."</div><div class="flip-hint">tap for Turkish ↓</div></div><div class="back"><div class="vtr">alt ekip</div><div class="vtrhint">"Her alt ekip farklı bir ürüne odaklanıyor."</div></div></div>
+      <div class="vcard" onclick="this.classList.toggle('flipped')"><div class="front"><div class="vword">to report on</div><div class="vpos">phrasal verb</div><div class="vex">"I need to report on our progress by Thursday."</div><div class="flip-hint">tap for Turkish ↓</div></div><div class="back"><div class="vtr">rapor vermek / bildirmek</div><div class="vtrhint">"Perşembeye kadar ilerlememizi bildirmem gerekiyor."</div></div></div>
+      <div class="vcard" onclick="this.classList.toggle('flipped')"><div class="front"><div class="vword">hypothesis</div><div class="vpos">noun</div><div class="vex">"Our hypothesis was proved correct by the data."</div><div class="flip-hint">tap for Turkish ↓</div></div><div class="back"><div class="vtr">hipotez / varsayım</div><div class="vtrhint">"Hipotezimiz verilerle doğrulandı."</div></div></div>
+      <div class="vcard" onclick="this.classList.toggle('flipped')"><div class="front"><div class="vword">procedure</div><div class="vpos">noun</div><div class="vex">"Follow the standard procedure for all tests."</div><div class="flip-hint">tap for Turkish ↓</div></div><div class="back"><div class="vtr">prosedür / yöntem</div><div class="vtrhint">"Tüm testler için standart prosedürü takip edin."</div></div></div>
+      <div class="vcard" onclick="this.classList.toggle('flipped')"><div class="front"><div class="vword">sodium bicarbonate</div><div class="vpos">noun (your product!)</div><div class="vex">"Sodium bicarbonate is used in food and industry."</div><div class="flip-hint">tap for Turkish ↓</div></div><div class="back"><div class="vtr">sodyum bikarbonat / kabartma tozu</div><div class="vtrhint">"Sodyum bikarbonat gıda ve sanayide kullanılır."</div></div></div>
+    </div>
+  </div>
+
+  <div class="vpanel" id="vp-context">
+    <div class="warn" style="margin-bottom:16px"><strong>This tab is especially for you, Seda.</strong> These are words you probably already know — but that are easy to use in the wrong situation. Read the wrong and right examples carefully. In English, context is everything.</div>
+    <div class="vsub">Words that are easy to confuse or use incorrectly</div>
+    <div class="vgrid">
+      <div class="vcard" onclick="this.classList.toggle('flipped')">
+        <div class="front"><div class="vword">make vs do</div><div class="vpos">very common mistake</div><div class="vex">We "make" things that are created. We "do" things that are tasks or actions.</div><div class="flip-hint">tap for examples ↓</div></div>
+        <div class="back"><div class="vwrong">✗ "I did a mistake."</div><div class="vright">✓ "I made a mistake."</div><div class="vwrong" style="margin-top:8px">✗ "She made her homework."</div><div class="vright">✓ "She did her homework."</div></div>
+      </div>
+      <div class="vcard" onclick="this.classList.toggle('flipped')">
+        <div class="front"><div class="vword">say vs tell</div><div class="vpos">very common mistake</div><div class="vex">"Say" does not need a person after it. "Tell" always needs a person.</div><div class="flip-hint">tap for examples ↓</div></div>
+        <div class="back"><div class="vwrong">✗ "She said me to stop."</div><div class="vright">✓ "She told me to stop."</div><div class="vwrong" style="margin-top:8px">✗ "He told that he was tired."</div><div class="vright">✓ "He said that he was tired."</div></div>
+      </div>
+      <div class="vcard" onclick="this.classList.toggle('flipped')">
+        <div class="front"><div class="vword">in / on / at (place)</div><div class="vpos">preposition</div><div class="vex">at = exact spot · on = surface or transport · in = inside a space</div><div class="flip-hint">tap for examples ↓</div></div>
+        <div class="back"><div class="vright">✓ "I'm at work / at the office."</div><div class="vright" style="margin-top:5px">✓ "She's on the bus / on the train."</div><div class="vright" style="margin-top:5px">✓ "We work in Ankara / in the lab."</div></div>
+      </div>
+      <div class="vcard" onclick="this.classList.toggle('flipped')">
+        <div class="front"><div class="vword">in / on / at (time)</div><div class="vpos">preposition</div><div class="vex">at = exact time · on = day or date · in = month, year, season</div><div class="flip-hint">tap for examples ↓</div></div>
+        <div class="back"><div class="vright">✓ "at 8am · at night · at the weekend"</div><div class="vright" style="margin-top:5px">✓ "on Monday · on 18 April · on my birthday"</div><div class="vright" style="margin-top:5px">✓ "in April · in 2024 · in the morning"</div></div>
+      </div>
+      <div class="vcard" onclick="this.classList.toggle('flipped')">
+        <div class="front"><div class="vword">interested vs interesting</div><div class="vpos">easy to swap!</div><div class="vex">"Interested" = how YOU feel · "Interesting" = what the thing is like</div><div class="flip-hint">tap for examples ↓</div></div>
+        <div class="back"><div class="vwrong">✗ "The subject is very interested."</div><div class="vright">✓ "The subject is very interesting."</div><div class="vright" style="margin-top:5px">✓ "I am very interested in chemistry."</div></div>
+      </div>
+      <div class="vcard" onclick="this.classList.toggle('flipped')">
+        <div class="front"><div class="vword">bored vs boring</div><div class="vpos">easy to swap!</div><div class="vex">"Bored" = how YOU feel · "Boring" = what the thing is like</div><div class="flip-hint">tap for examples ↓</div></div>
+        <div class="back"><div class="vwrong">✗ "The meeting was very bored."</div><div class="vright">✓ "The meeting was very boring."</div><div class="vright" style="margin-top:5px">✓ "I was so bored in the meeting."</div></div>
+      </div>
+      <div class="vcard" onclick="this.classList.toggle('flipped')">
+        <div class="front"><div class="vword">since vs for</div><div class="vpos">with perfect tenses</div><div class="vex">"Since" = a point in time · "For" = a length of time</div><div class="flip-hint">tap for examples ↓</div></div>
+        <div class="back"><div class="vwrong">✗ "I've worked here since two years."</div><div class="vright">✓ "I've worked here for two years."</div><div class="vright" style="margin-top:5px">✓ "I've worked here since 2022."</div></div>
+      </div>
+      <div class="vcard" onclick="this.classList.toggle('flipped')">
+        <div class="front"><div class="vword">I / me / my</div><div class="vpos">pronouns</div><div class="vex">"I" = subject (doing the action) · "me" = object (receiving) · "my" = possession</div><div class="flip-hint">tap for examples ↓</div></div>
+        <div class="back"><div class="vwrong">✗ "Me and my colleague presented."</div><div class="vright">✓ "My colleague and I presented."</div><div class="vwrong" style="margin-top:8px">✗ "She sent the report to I."</div><div class="vright">✓ "She sent the report to me."</div></div>
+      </div>
+      <div class="vcard" onclick="this.classList.toggle('flipped')">
+        <div class="front"><div class="vword">used to</div><div class="vpos">past habit</div><div class="vex">Use "used to" for things that were true in the past but are not now.</div><div class="flip-hint">tap for examples ↓</div></div>
+        <div class="back"><div class="vwrong">✗ "I use to work in a different company."</div><div class="vright">✓ "I used to work in a different company."</div><div class="vright" style="margin-top:5px">✓ "She used to live in Istanbul."</div></div>
+      </div>
+      <div class="vcard" onclick="this.classList.toggle('flipped')">
+        <div class="front"><div class="vword">remember to vs remember -ing</div><div class="vpos">verb patterns</div><div class="vex">"Remember to do" = don't forget · "Remember doing" = recall a past moment</div><div class="flip-hint">tap for examples ↓</div></div>
+        <div class="back"><div class="vright">✓ "Remember to send the report." (future task — don't forget!)</div><div class="vright" style="margin-top:5px">✓ "I remember sending the report." (I did it; I recall it)</div></div>
+      </div>
+      <div class="vcard" onclick="this.classList.toggle('flipped')">
+        <div class="front"><div class="vword">to feel vs to think</div><div class="vpos">expressing opinion</div><div class="vex">Both can express opinions, but "feel" is more personal/emotional. "Think" is more neutral.</div><div class="flip-hint">tap for examples ↓</div></div>
+        <div class="back"><div class="vright">✓ "I think the exam will be fine." (neutral opinion)</div><div class="vright" style="margin-top:5px">✓ "I feel nervous about speaking." (emotional)</div><div class="vwrong" style="margin-top:8px">✗ "I feel that the answer is B." (awkward — use "think" here)</div></div>
+      </div>
+      <div class="vcard" onclick="this.classList.toggle('flipped')">
+        <div class="front"><div class="vword">quite vs very</div><div class="vpos">degree adverbs</div><div class="vex">"Quite" in British English often means "fairly/moderately", not "very". Be careful!</div><div class="flip-hint">tap for examples ↓</div></div>
+        <div class="back"><div class="vright">✓ "It was quite good." (= fairly good, not amazing)</div><div class="vright" style="margin-top:5px">✓ "It was very good." (= strongly good)</div><div class="vtrhint" style="margin-top:5px">In Turkish, "oldukça" = quite. But in English, "quite" is softer than you might expect.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="vpanel" id="vp-exam">
+    <div class="vsub">Academic words you'll see in the exam</div>
+    <div class="vgrid">
+      <div class="vcard" onclick="this.classList.toggle('flipped')"><div class="front"><div class="vword">according to</div><div class="vpos">phrase</div><div class="vex">"According to the text, the answer is B."</div><div class="flip-hint">tap for Turkish ↓</div></div><div class="back"><div class="vtr">…'a / …'e göre</div><div class="vtrhint">"Metne göre cevap B'dir."</div></div></div>
+      <div class="vcard" onclick="this.classList.toggle('flipped')"><div class="front"><div class="vword">to suggest</div><div class="vpos">verb</div><div class="vex">"The data suggests that levels are rising."</div><div class="flip-hint">tap for Turkish ↓</div></div><div class="back"><div class="vtr">önermek / göstermek</div><div class="vtrhint">"Veriler seviyelerin yükseldiğini gösteriyor."</div></div></div>
+      <div class="vcard" onclick="this.classList.toggle('flipped')"><div class="front"><div class="vword">to indicate</div><div class="vpos">verb</div><div class="vex">"The results indicate a positive change."</div><div class="flip-hint">tap for Turkish ↓</div></div><div class="back"><div class="vtr">göstermek / belirtmek</div><div class="vtrhint">"Sonuçlar olumlu bir değişikliği gösteriyor."</div></div></div>
+      <div class="vcard" onclick="this.classList.toggle('flipped')"><div class="front"><div class="vword">advantage</div><div class="vpos">noun</div><div class="vex">"One advantage of remote work is flexibility."</div><div class="flip-hint">tap for Turkish ↓</div></div><div class="back"><div class="vtr">avantaj / üstünlük</div><div class="vtrhint">"Uzaktan çalışmanın bir avantajı esnekliktir."</div></div></div>
+      <div class="vcard" onclick="this.classList.toggle('flipped')"><div class="front"><div class="vword">disadvantage</div><div class="vpos">noun</div><div class="vex">"A disadvantage is that it costs more time."</div><div class="flip-hint">tap for Turkish ↓</div></div><div class="back"><div class="vtr">dezavantaj / olumsuz yön</div><div class="vtrhint">"Olumsuz bir yönü daha fazla zaman almasıdır."</div></div></div>
+      <div class="vcard" onclick="this.classList.toggle('flipped')"><div class="front"><div class="vword">evidence</div><div class="vpos">noun</div><div class="vex">"Use evidence from the text to support your answer."</div><div class="flip-hint">tap for Turkish ↓</div></div><div class="back"><div class="vtr">kanıt / delil</div><div class="vtrhint">"Cevabını desteklemek için metinden kanıt kullan."</div></div></div>
+      <div class="vcard" onclick="this.classList.toggle('flipped')"><div class="front"><div class="vword">to summarise</div><div class="vpos">verb</div><div class="vex">"Summarise the main idea in two sentences."</div><div class="flip-hint">tap for Turkish ↓</div></div><div class="back"><div class="vtr">özetlemek</div><div class="vtrhint">"Ana fikri iki cümlede özetle."</div></div></div>
+      <div class="vcard" onclick="this.classList.toggle('flipped')"><div class="front"><div class="vword">significant</div><div class="vpos">adjective</div><div class="vex">"There was a significant improvement in results."</div><div class="flip-hint">tap for Turkish ↓</div></div><div class="back"><div class="vtr">önemli / belirgin</div><div class="vtrhint">"Sonuçlarda belirgin bir iyileşme oldu."</div></div></div>
+      <div class="vcard" onclick="this.classList.toggle('flipped')"><div class="front"><div class="vword">whereas</div><div class="vpos">conjunction</div><div class="vex">"I enjoy writing, whereas speaking makes me nervous."</div><div class="flip-hint">tap for Turkish ↓</div></div><div class="back"><div class="vtr">oysa / halbuki</div><div class="vtrhint">"Yazmayı severim, oysa konuşmak beni gergiyor."</div></div></div>
+      <div class="vcard" onclick="this.classList.toggle('flipped')"><div class="front"><div class="vword">to argue</div><div class="vpos">verb (academic)</div><div class="vex">"Some people argue that technology improves learning."</div><div class="flip-hint">tap for Turkish ↓</div></div><div class="back"><div class="vtr">öne sürmek / iddia etmek</div><div class="vtrhint">"Bazı insanlar teknolojinin öğrenmeyi iyileştirdiğini öne sürüyor."</div></div></div>
+      <div class="vcard" onclick="this.classList.toggle('flipped')"><div class="front"><div class="vword">in my opinion</div><div class="vpos">phrase</div><div class="vex">"In my opinion, teamwork produces better results."</div><div class="flip-hint">tap for Turkish ↓</div></div><div class="back"><div class="vtr">benim görüşüme göre / bence</div><div class="vtrhint">"Benim görüşüme göre ekip çalışması daha iyi sonuçlar üretir."</div></div></div>
+      <div class="vcard" onclick="this.classList.toggle('flipped')"><div class="front"><div class="vword">to describe</div><div class="vpos">verb</div><div class="vex">"Describe your daily routine in 3–4 sentences."</div><div class="flip-hint">tap for Turkish ↓</div></div><div class="back"><div class="vtr">tanımlamak / açıklamak</div><div class="vtrhint">"Günlük rutininizi 3–4 cümleyle açıklayın."</div></div></div>
+    </div>
+  </div>
+
+  <div class="vpanel" id="vp-connectors">
+    <div class="tip" style="margin-bottom:16px"><strong>Why connectors matter for your exam:</strong> In writing and speaking, using connectors correctly shows the examiner you can link ideas clearly. They can completely change the meaning of a sentence — so the right one in the right place matters a lot.</div>
+    <table class="ctable">
+      <tr><th>Word / phrase</th><th>Türkçe</th><th>Use it when…</th><th>Example</th></tr>
+      <tr><td class="cw">firstly / first of all</td><td class="ctr">öncelikle</td><td class="cuse">starting a list</td><td class="cex">"Firstly, exercise improves your mood."</td></tr>
+      <tr><td class="cw">furthermore / in addition</td><td class="ctr">ayrıca / bunun yanı sıra</td><td class="cuse">adding a new point</td><td class="cex">"Furthermore, it reduces stress."</td></tr>
+      <tr><td class="cw">however</td><td class="ctr">ancak / bununla birlikte</td><td class="cuse">showing contrast</td><td class="cex">"However, it can be expensive."</td></tr>
+      <tr><td class="cw">although / even though</td><td class="ctr">her ne kadar… olsa da</td><td class="cuse">surprising contrast in one sentence</td><td class="cex">"Although it is difficult, it is worth it."</td></tr>
+      <tr><td class="cw">whereas</td><td class="ctr">oysa / -e karşın</td><td class="cuse">comparing two different things</td><td class="cex">"I like reading, whereas she prefers listening."</td></tr>
+      <tr><td class="cw">on the other hand</td><td class="ctr">öte yandan</td><td class="cuse">presenting the opposite side</td><td class="cex">"On the other hand, many people disagree."</td></tr>
+      <tr><td class="cw">therefore / as a result</td><td class="ctr">bu nedenle / sonuç olarak</td><td class="cuse">giving a consequence</td><td class="cex">"Therefore, we need a new approach."</td></tr>
+      <tr><td class="cw">because / since / as</td><td class="ctr">çünkü / -dığı için</td><td class="cuse">giving a reason</td><td class="cex">"I was late because the traffic was bad."</td></tr>
+      <tr><td class="cw">for example / for instance</td><td class="ctr">örneğin / mesela</td><td class="cuse">giving an example</td><td class="cex">"For example, in my job we often write reports."</td></tr>
+      <tr><td class="cw">in conclusion / to sum up</td><td class="ctr">sonuç olarak / özetle</td><td class="cuse">ending a paragraph or essay</td><td class="cex">"In conclusion, I believe this approach is better."</td></tr>
+      <tr><td class="cw">despite / in spite of</td><td class="ctr">-e rağmen</td><td class="cuse">contrast — followed by a noun, not a full sentence</td><td class="cex">"Despite being tired, she worked hard."</td></tr>
+      <tr><td class="cw">unless</td><td class="ctr">-medikçe / eğer … olmazsa</td><td class="cuse">negative condition</td><td class="cex">"Unless you practise, it won't get easier."</td></tr>
+    </table>
+  </div>
+</div>
+
+<script>
+function vshow(name, btn) {
+  document.querySelectorAll('.vpanel').forEach(p => p.classList.remove('on'));
+  document.querySelectorAll('.vtab').forEach(b => b.classList.remove('on'));
+  document.getElementById('vp-' + name).classList.add('on');
+  btn.classList.add('on');
+}
+</script>
+</body>
+</html>
