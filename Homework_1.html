@@ -1,0 +1,909 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Seda's Homework — Lesson 1</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --cream: #fdf8f2;
+  --warm-white: #fffcf8;
+  --ink: #1c1712;
+  --ink-soft: #4a4238;
+  --ink-muted: #8a7f74;
+  --teal: #2d8f76;
+  --teal-light: #e0f5ef;
+  --teal-mid: #a8dfd0;
+  --coral: #d95f3b;
+  --coral-light: #fdeee8;
+  --coral-mid: #f5b8a0;
+  --gold: #c98a2b;
+  --gold-light: #fdf3e0;
+  --gold-mid: #f0cc88;
+  --purple: #6b4fa0;
+  --purple-light: #f0ecfb;
+  --purple-mid: #c9b8ed;
+  --border: rgba(28,23,18,0.1);
+  --border-soft: rgba(28,23,18,0.06);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--cream);
+  color: var(--ink);
+  min-height: 100vh;
+}
+
+.page-header {
+  background: var(--warm-white);
+  border-bottom: 1px solid var(--border);
+  padding: 2.5rem 1.5rem 2rem;
+  text-align: center;
+}
+
+.header-tag {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--teal);
+  background: var(--teal-light);
+  padding: 4px 14px;
+  border-radius: 999px;
+  margin-bottom: 1rem;
+}
+
+.page-header h1 {
+  font-family: 'Fraunces', serif;
+  font-size: 32px;
+  font-weight: 600;
+  color: var(--ink);
+  margin-bottom: 0.4rem;
+  line-height: 1.2;
+}
+
+.page-header p {
+  font-size: 15px;
+  color: var(--ink-soft);
+  line-height: 1.6;
+  max-width: 480px;
+  margin: 0 auto 1.2rem;
+}
+
+.header-pills {
+  display: flex; flex-wrap: wrap; gap: 8px; justify-content: center;
+}
+.hpill {
+  font-size: 12px; font-weight: 600; padding: 5px 14px;
+  border-radius: 999px; border: 1.5px solid;
+}
+.hp-teal { background: var(--teal-light); color: var(--teal); border-color: var(--teal-mid); }
+.hp-coral { background: var(--coral-light); color: var(--coral); border-color: var(--coral-mid); }
+.hp-gold { background: var(--gold-light); color: var(--gold); border-color: var(--gold-mid); }
+
+.container { max-width: 760px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+
+/* ACCORDION */
+.accordion { margin-bottom: 1rem; border-radius: 16px; overflow: hidden; border: 1.5px solid var(--border); background: var(--warm-white); }
+
+.acc-trigger {
+  width: 100%; text-align: left; background: none; border: none;
+  padding: 1.5rem 1.75rem; cursor: pointer; display: flex; align-items: center; gap: 16px;
+  transition: background 0.2s;
+}
+.acc-trigger:hover { background: rgba(28,23,18,0.02); }
+
+.acc-num {
+  width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center;
+  justify-content: center; font-family: 'Fraunces', serif; font-size: 20px; font-weight: 600;
+  flex-shrink: 0;
+}
+.num-teal { background: var(--teal-light); color: var(--teal); }
+.num-coral { background: var(--coral-light); color: var(--coral); }
+.num-gold { background: var(--gold-light); color: var(--gold); }
+
+.acc-heading { flex: 1; }
+.acc-title {
+  font-family: 'Fraunces', serif; font-size: 19px; font-weight: 600; color: var(--ink);
+  line-height: 1.2; display: block;
+}
+.acc-sub { font-size: 13px; color: var(--ink-muted); margin-top: 3px; }
+
+.acc-meta { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+.acc-tag {
+  font-size: 11px; font-weight: 600; padding: 4px 11px; border-radius: 999px;
+  letter-spacing: 0.04em;
+}
+.tag-teal { background: var(--teal-light); color: var(--teal); }
+.tag-coral { background: var(--coral-light); color: var(--coral); }
+.tag-gold { background: var(--gold-light); color: var(--gold); }
+
+.acc-arrow {
+  width: 28px; height: 28px; border-radius: 50%; border: 1.5px solid var(--border);
+  display: flex; align-items: center; justify-content: center; font-size: 12px;
+  color: var(--ink-muted); transition: transform 0.3s, background 0.2s; flex-shrink: 0;
+}
+.accordion.open .acc-arrow { transform: rotate(180deg); background: var(--cream); }
+
+.acc-body {
+  display: none; padding: 0 1.75rem 1.75rem;
+  border-top: 1.5px solid var(--border-soft);
+}
+.accordion.open .acc-body { display: block; }
+
+/* CONTENT SECTIONS */
+.section-block { margin-bottom: 2rem; }
+.section-block:last-child { margin-bottom: 0; }
+
+.block-label {
+  font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.09em;
+  color: var(--ink-muted); margin-bottom: 12px; margin-top: 1.5rem;
+  display: flex; align-items: center; gap: 8px;
+}
+.block-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+/* EXPLANATION BOXES */
+.explain-box {
+  background: var(--cream); border-radius: 12px; padding: 1.25rem 1.5rem;
+  border: 1px solid var(--border); margin-bottom: 1rem;
+}
+.explain-box p { font-size: 14px; line-height: 1.75; color: var(--ink-soft); margin-bottom: 0.75rem; }
+.explain-box p:last-child { margin-bottom: 0; }
+.explain-box strong { font-weight: 600; color: var(--ink); }
+
+/* RULE CARDS */
+.rule-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px; margin-bottom: 1rem; }
+.rule-card { border-radius: 12px; padding: 1rem 1.25rem; }
+.rc-teal { background: var(--teal-light); border: 1px solid var(--teal-mid); }
+.rc-coral { background: var(--coral-light); border: 1px solid var(--coral-mid); }
+.rc-gold { background: var(--gold-light); border: 1px solid var(--gold-mid); }
+.rc-purple { background: var(--purple-light); border: 1px solid var(--purple-mid); }
+
+.rule-card .rule-name { font-size: 13px; font-weight: 700; margin-bottom: 6px; }
+.rc-teal .rule-name { color: var(--teal); }
+.rc-coral .rule-name { color: var(--coral); }
+.rc-gold .rule-name { color: var(--gold); }
+.rc-purple .rule-name { color: var(--purple); }
+
+.rule-card .rule-text { font-size: 13px; color: var(--ink-soft); line-height: 1.55; }
+.rule-card .rule-example { font-size: 13px; font-style: italic; margin-top: 6px; color: var(--ink); }
+
+/* TIMELINE */
+.timeline-wrap { background: var(--cream); border-radius: 12px; padding: 1.25rem 1.5rem; border: 1px solid var(--border); margin-bottom: 1rem; }
+.timeline-title { font-size: 13px; font-weight: 700; color: var(--ink); margin-bottom: 12px; }
+.timeline { position: relative; padding-left: 20px; }
+.timeline::before { content:''; position:absolute; left:6px; top:8px; bottom:8px; width:2px; background:var(--border); border-radius:2px; }
+.tl-item { position: relative; margin-bottom: 14px; padding-left: 20px; }
+.tl-item:last-child { margin-bottom: 0; }
+.tl-dot { position:absolute; left:-14px; top:5px; width:10px; height:10px; border-radius:50%; border:2px solid; background:var(--warm-white); }
+.tl-teal { border-color: var(--teal); }
+.tl-coral { border-color: var(--coral); }
+.tl-gold { border-color: var(--gold); }
+.tl-item .tl-label { font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:3px; }
+.tl-item .tl-text { font-size:13px; color:var(--ink-soft); line-height:1.55; }
+.tl-item .tl-ex { font-size:13px; font-style:italic; color:var(--ink); margin-top:3px; }
+
+/* FORMULA BOX */
+.formula-box {
+  border-radius: 12px; padding: 1.1rem 1.4rem; margin-bottom: 10px;
+  display: flex; align-items: flex-start; gap: 12px;
+}
+.fb-teal { background: var(--teal-light); border: 1.5px solid var(--teal-mid); }
+.fb-coral { background: var(--coral-light); border: 1.5px solid var(--coral-mid); }
+.fb-gold { background: var(--gold-light); border: 1.5px solid var(--gold-mid); }
+.formula-icon { font-size: 20px; flex-shrink:0; margin-top:2px; }
+.formula-body .formula-name { font-size:13px; font-weight:700; margin-bottom:4px; }
+.fb-teal .formula-name { color: var(--teal); }
+.fb-coral .formula-name { color: var(--coral); }
+.fb-gold .formula-name { color: var(--gold); }
+.formula-body .formula-structure { font-size:14px; font-weight:600; color:var(--ink); margin-bottom:5px; font-family: 'Fraunces', serif; }
+.formula-body .formula-ex { font-size:13px; color:var(--ink-soft); font-style:italic; }
+
+/* EXAMPLE PAIRS */
+.ex-pair { margin-bottom: 10px; }
+.ex-wrong { font-size:14px; color: #b83b2a; padding: 8px 12px; background:#fef2f0; border-radius:8px; border-left:3px solid #e07060; margin-bottom:4px; }
+.ex-right { font-size:14px; color: #1e6b50; padding: 8px 12px; background:#edf7f3; border-radius:8px; border-left:3px solid #4caf87; }
+.ex-wrong::before { content:'✗  '; font-weight:700; }
+.ex-right::before { content:'✓  '; font-weight:700; }
+
+/* EXERCISES */
+.exercise-block {
+  background: var(--warm-white); border-radius: 14px;
+  border: 1.5px solid var(--border); padding: 1.5rem; margin-bottom: 1rem;
+}
+.ex-header { display:flex; align-items:center; gap:10px; margin-bottom:1rem; }
+.ex-badge {
+  font-size:11px; font-weight:700; padding:3px 10px; border-radius:999px;
+  letter-spacing:0.05em; text-transform:uppercase;
+}
+.exb-teal { background:var(--teal-light); color:var(--teal); }
+.exb-coral { background:var(--coral-light); color:var(--coral); }
+.exb-gold { background:var(--gold-light); color:var(--gold); }
+.exb-purple { background:var(--purple-light); color:var(--purple); }
+.ex-title { font-size:15px; font-weight:600; color:var(--ink); }
+
+.q-item { margin-bottom: 1.25rem; }
+.q-item:last-child { margin-bottom: 0; }
+.q-text { font-size:14px; color:var(--ink); line-height:1.6; margin-bottom:6px; }
+.q-text em { font-style:italic; color:var(--ink-soft); }
+.q-input {
+  width:100%; border:1.5px solid var(--border); border-radius:9px;
+  padding:10px 14px; font-size:14px; font-family:'DM Sans',sans-serif;
+  color:var(--ink); background:var(--cream); outline:none;
+  transition:border-color 0.2s, background 0.2s;
+}
+.q-input:focus { border-color:var(--teal); background:var(--warm-white); }
+.q-input.correct { border-color:#4caf87; background:#edf7f3; }
+.q-input.incorrect { border-color:#e07060; background:#fef2f0; }
+
+.q-textarea {
+  width:100%; border:1.5px solid var(--border); border-radius:9px;
+  padding:10px 14px; font-size:14px; font-family:'DM Sans',sans-serif;
+  color:var(--ink); background:var(--cream); outline:none; resize:vertical;
+  min-height:80px; transition:border-color 0.2s, background 0.2s;
+}
+.q-textarea:focus { border-color:var(--teal); background:var(--warm-white); }
+
+.check-btn {
+  margin-top:8px; padding:8px 18px; border-radius:8px; font-size:13px;
+  font-weight:600; font-family:'DM Sans',sans-serif; cursor:pointer;
+  border:1.5px solid var(--border); background:var(--cream);
+  color:var(--ink-soft); transition:all 0.15s;
+}
+.check-btn:hover { background:var(--ink); color:#fff; border-color:var(--ink); }
+
+.feedback-row { display:flex; align-items:center; gap:8px; margin-top:7px; font-size:13px; min-height:22px; }
+.fb-correct { color:#1e6b50; font-weight:600; }
+.fb-incorrect { color:#b83b2a; font-weight:600; }
+.fb-answer { color:var(--ink-soft); }
+
+/* PREPOSITION TABLE */
+.prep-table { width:100%; border-collapse:collapse; font-size:14px; margin-bottom:1rem; }
+.prep-table th { text-align:left; padding:10px 14px; font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; border-bottom:2px solid var(--border); }
+.prep-table td { padding:10px 14px; border-bottom:1px solid var(--border-soft); vertical-align:top; line-height:1.55; }
+.prep-table tr:last-child td { border-bottom:none; }
+.col-at { color:var(--teal); font-weight:700; }
+.col-on { color:var(--coral); font-weight:700; }
+.col-in { color:var(--gold); font-weight:700; }
+
+/* SPEAKING SECTION */
+.prompt-grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap:10px; margin-bottom:1rem; }
+.prompt-card {
+  border-radius:12px; padding:1rem 1.25rem;
+  border:1.5px solid;
+}
+.pc-mon { background:#fff9f0; border-color:#f5d9a8; }
+.pc-tue { background:#f0faf5; border-color:#a8dfd0; }
+.pc-wed { background:#f5f0fb; border-color:#c9b8ed; }
+.pc-thu { background:#fff5f3; border-color:#f5b8a0; }
+.pc-fri { background:#f0f5fb; border-color:#b8cff5; }
+.pc-mon .day-label { color:#b87a10; }
+.pc-tue .day-label { color:var(--teal); }
+.pc-wed .day-label { color:var(--purple); }
+.pc-thu .day-label { color:var(--coral); }
+.pc-fri .day-label { color:#2a5fad; }
+.day-label { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.07em; margin-bottom:6px; }
+.day-prompt { font-size:14px; font-weight:600; color:var(--ink); line-height:1.45; margin-bottom:6px; }
+.day-starter { font-size:12px; color:var(--ink-soft); font-style:italic; line-height:1.5; }
+
+.tip-box {
+  background:var(--teal-light); border:1.5px solid var(--teal-mid);
+  border-radius:12px; padding:1.1rem 1.4rem; font-size:14px;
+  color:#0d5940; line-height:1.65;
+}
+.tip-box strong { font-weight:700; }
+
+.note-box {
+  background:var(--gold-light); border:1.5px solid var(--gold-mid);
+  border-radius:12px; padding:1.1rem 1.4rem; font-size:14px;
+  color:#7a5210; line-height:1.65; margin-bottom:1rem;
+}
+.note-box strong { font-weight:700; }
+
+.progress-wrap { margin-bottom:1.5rem; }
+.progress-label { font-size:13px; color:var(--ink-muted); margin-bottom:6px; }
+.progress-track { background:var(--border); border-radius:999px; height:6px; overflow:hidden; }
+.progress-fill { height:100%; background:linear-gradient(90deg,var(--teal),var(--teal-mid)); border-radius:999px; transition:width 0.4s ease; }
+
+/* FILL IN BLANK specific */
+.blank-sentence { font-size:15px; line-height:1.8; color:var(--ink); margin-bottom:8px; }
+.blank-input {
+  display:inline-block; border:none; border-bottom:2px solid var(--teal);
+  padding:2px 8px; font-size:15px; font-family:'DM Sans',sans-serif;
+  color:var(--ink); background:transparent; outline:none; min-width:120px;
+  transition:border-color 0.2s;
+}
+.blank-input:focus { border-color:var(--coral); }
+.blank-input.correct { border-color:#4caf87; color:#1e6b50; }
+.blank-input.incorrect { border-color:#e07060; color:#b83b2a; }
+
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <div class="header-tag">Homework · Lesson 1</div>
+  <h1>Your homework, Seda</h1>
+  <p>Three topics to work through before Monday. Take your time — read the explanations first, then try the exercises.</p>
+  <div class="header-pills">
+    <span class="hpill hp-teal">Perfect tenses</span>
+    <span class="hpill hp-coral">Prepositions</span>
+    <span class="hpill hp-gold">Speaking practice</span>
+  </div>
+</div>
+
+<div class="container">
+
+  <div class="progress-wrap">
+    <div class="progress-label">Overall progress — <span id="pct">0</span>% complete</div>
+    <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+  </div>
+
+  <!-- ======= SECTION 1: PERFECT TENSES ======= -->
+  <div class="accordion open" id="acc1">
+    <button class="acc-trigger" onclick="toggleAcc('acc1')">
+      <div class="acc-num num-teal">1</div>
+      <div class="acc-heading">
+        <span class="acc-title">Perfect tenses</span>
+        <span class="acc-sub">Present perfect & past perfect — when and how to use them</span>
+      </div>
+      <div class="acc-meta">
+        <span class="acc-tag tag-teal">Grammar</span>
+        <div class="acc-arrow">▼</div>
+      </div>
+    </button>
+    <div class="acc-body">
+
+      <div class="block-label">Why this matters for your exam</div>
+      <div class="explain-box">
+        <p>The İTEP grammar section will ask you to choose the <strong>correct tense</strong> for a sentence. Present perfect and past perfect are two of the most commonly tested tenses — and they are easy to confuse! The good news is that once you understand the logic behind them, they start to feel natural.</p>
+      </div>
+
+      <div class="block-label">Present perfect — the basics</div>
+      <div class="explain-box">
+        <p><strong>Use present perfect when:</strong> something happened in the past but is still connected to the present — you can feel its result <em>right now</em>.</p>
+        <p>Think of it as a bridge between the past and the present.</p>
+      </div>
+
+      <div class="timeline-wrap">
+        <div class="timeline-title">When does it happen? — visualise this</div>
+        <div class="timeline">
+          <div class="tl-item">
+            <div class="tl-dot tl-teal"></div>
+            <div class="tl-label" style="color:var(--teal)">Experience (ever / never)</div>
+            <div class="tl-text">Something that happened at an unspecified time in the past</div>
+            <div class="tl-ex">"I have visited London." / "She has never eaten sushi."</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot tl-teal"></div>
+            <div class="tl-label" style="color:var(--teal)">Recent past with present result</div>
+            <div class="tl-text">Something just happened and you can see/feel the result now</div>
+            <div class="tl-ex">"I have lost my keys." (= I can't find them now) / "She has had a baby." (= the baby is here now)</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot tl-teal"></div>
+            <div class="tl-label" style="color:var(--teal)">Duration up to now (for / since)</div>
+            <div class="tl-text">Something started in the past and continues now</div>
+            <div class="tl-ex">"I have worked here for two years." / "She has lived in Ankara since 2018."</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="formula-box fb-teal">
+        <div class="formula-icon">📐</div>
+        <div class="formula-body">
+          <div class="formula-name">Formula — present perfect</div>
+          <div class="formula-structure">Subject + have / has + past participle</div>
+          <div class="formula-ex">"I have worked…" &nbsp;·&nbsp; "She has started…" &nbsp;·&nbsp; "They have finished…"</div>
+        </div>
+      </div>
+
+      <div class="rule-grid">
+        <div class="rule-card rc-teal">
+          <div class="rule-name">Key words → present perfect</div>
+          <div class="rule-text">already · just · yet · ever · never · for · since · recently · so far</div>
+          <div class="rule-example">"Have you eaten yet?" / "I've just arrived."</div>
+        </div>
+        <div class="rule-card rc-coral">
+          <div class="rule-name">have vs has — don't mix them!</div>
+          <div class="rule-text">I / you / we / they → <strong>have</strong><br>he / she / it → <strong>has</strong></div>
+          <div class="rule-example">"She <strong>has</strong> started." / "We <strong>have</strong> started."</div>
+        </div>
+      </div>
+
+      <div class="block-label">Past perfect — the basics</div>
+      <div class="explain-box">
+        <p><strong>Use past perfect when:</strong> you are talking about the past, and you need to describe something that happened <em>even earlier</em> — before another past event.</p>
+        <p>Think of it as the "past of the past." If you have two past events and one happened before the other, the earlier one uses past perfect.</p>
+      </div>
+
+      <div class="timeline-wrap">
+        <div class="timeline-title">Visualise the order of events</div>
+        <div class="timeline">
+          <div class="tl-item">
+            <div class="tl-dot tl-coral"></div>
+            <div class="tl-label" style="color:var(--coral)">Event 1 — earlier past (past perfect)</div>
+            <div class="tl-text">This happened first. Use had + past participle.</div>
+            <div class="tl-ex">"She had already left…"</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot tl-gold"></div>
+            <div class="tl-label" style="color:var(--gold)">Event 2 — later past (simple past)</div>
+            <div class="tl-text">This happened second. Use normal past tense.</div>
+            <div class="tl-ex">"…when I arrived."</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="formula-box fb-coral">
+        <div class="formula-icon">📐</div>
+        <div class="formula-body">
+          <div class="formula-name">Formula — past perfect</div>
+          <div class="formula-structure">Subject + had + past participle</div>
+          <div class="formula-ex">"I had finished…" &nbsp;·&nbsp; "She had already left…" &nbsp;·&nbsp; "They had never met…"</div>
+        </div>
+      </div>
+
+      <div class="rule-grid">
+        <div class="rule-card rc-gold">
+          <div class="rule-name">Key words → past perfect</div>
+          <div class="rule-text">already · just · never · before · after · by the time · when</div>
+          <div class="rule-example">"By the time I arrived, she had left." / "I had never tried it before."</div>
+        </div>
+        <div class="rule-card rc-purple">
+          <div class="rule-name">The big difference</div>
+          <div class="rule-text">Present perfect → connected to <strong>now</strong><br>Past perfect → connected to another <strong>past moment</strong></div>
+          <div class="rule-example">"I have eaten." (I'm full now) vs "I had eaten." (before something else happened)</div>
+        </div>
+      </div>
+
+      <div class="block-label">Common mistakes — read these carefully!</div>
+      <div class="ex-pair">
+        <div class="ex-wrong">"I have seen her yesterday."</div>
+        <div class="ex-right">"I saw her yesterday." — when you say a specific time (yesterday), use simple past, not present perfect!</div>
+      </div>
+      <div class="ex-pair">
+        <div class="ex-wrong">"She already left when I called."</div>
+        <div class="ex-right">"She had already left when I called." — two past events: left happened first, so use past perfect.</div>
+      </div>
+      <div class="ex-pair">
+        <div class="ex-wrong">"I worked here since 2022."</div>
+        <div class="ex-right">"I have worked here since 2022." — still working now, so use present perfect.</div>
+      </div>
+
+      <div class="block-label">Exercise 1 — choose the correct tense</div>
+      <div class="exercise-block">
+        <div class="ex-header">
+          <span class="ex-badge exb-teal">Exercise 1</span>
+          <span class="ex-title">Fill in the blank with the correct form</span>
+        </div>
+
+        <div class="q-item">
+          <div class="blank-sentence">1. I _____ (work) at this company for three years.</div>
+          <div class="q-item"><input class="q-input" id="e1q1" placeholder="Type your answer…" oninput="trackProgress()"></div>
+          <button class="check-btn" onclick="checkBlank('e1q1',['have worked'],'e1q1fb')">Check</button>
+          <div class="feedback-row" id="e1q1fb"></div>
+        </div>
+
+        <div class="q-item">
+          <div class="blank-sentence">2. By the time Neva woke up, I _____ (already / make) breakfast.</div>
+          <div class="q-item"><input class="q-input" id="e1q2" placeholder="Type your answer…" oninput="trackProgress()"></div>
+          <button class="check-btn" onclick="checkBlank('e1q2',['had already made'],'e1q2fb')">Check</button>
+          <div class="feedback-row" id="e1q2fb"></div>
+        </div>
+
+        <div class="q-item">
+          <div class="blank-sentence">3. She _____ (never / visit) the R&D lab before she started her new job.</div>
+          <div class="q-item"><input class="q-input" id="e1q3" placeholder="Type your answer…" oninput="trackProgress()"></div>
+          <button class="check-btn" onclick="checkBlank('e1q3',['had never visited'],'e1q3fb')">Check</button>
+          <div class="feedback-row" id="e1q3fb"></div>
+        </div>
+
+        <div class="q-item">
+          <div class="blank-sentence">4. _____ you _____ (finish) the report yet?</div>
+          <div class="q-item"><input class="q-input" id="e1q4" placeholder="Type your answer…" oninput="trackProgress()"></div>
+          <button class="check-btn" onclick="checkBlank('e1q4',['have you finished','have you already finished'],'e1q4fb')">Check</button>
+          <div class="feedback-row" id="e1q4fb"></div>
+        </div>
+
+        <div class="q-item">
+          <div class="blank-sentence">5. When I arrived at the meeting, my colleague _____ (already / start) the presentation.</div>
+          <div class="q-item"><input class="q-input" id="e1q5" placeholder="Type your answer…" oninput="trackProgress()"></div>
+          <button class="check-btn" onclick="checkBlank('e1q5',['had already started'],'e1q5fb')">Check</button>
+          <div class="feedback-row" id="e1q5fb"></div>
+        </div>
+      </div>
+
+      <div class="block-label">Exercise 2 — correct the mistake</div>
+      <div class="exercise-block">
+        <div class="ex-header">
+          <span class="ex-badge exb-teal">Exercise 2</span>
+          <span class="ex-title">Each sentence has a mistake. Rewrite it correctly.</span>
+        </div>
+
+        <div class="q-item">
+          <div class="q-text"><em>Wrong:</em> "I have seen her yesterday at the lab."</div>
+          <textarea class="q-textarea" id="e2q1" placeholder="Write the correct sentence…" oninput="trackProgress()"></textarea>
+        </div>
+        <div class="q-item">
+          <div class="q-text"><em>Wrong:</em> "She worked in R&D since she graduated."</div>
+          <textarea class="q-textarea" id="e2q2" placeholder="Write the correct sentence…" oninput="trackProgress()"></textarea>
+        </div>
+        <div class="q-item">
+          <div class="q-text"><em>Wrong:</em> "The experiment already finished when the manager arrived."</div>
+          <textarea class="q-textarea" id="e2q3" placeholder="Write the correct sentence…" oninput="trackProgress()"></textarea>
+        </div>
+
+        <div class="note-box" style="margin-top:1rem">
+          <strong>Answers:</strong><br>
+          1. "I saw her yesterday at the lab." (specific time = simple past)<br>
+          2. "She has worked in R&D since she graduated." (still working now = present perfect)<br>
+          3. "The experiment had already finished when the manager arrived." (two past events = past perfect)
+        </div>
+      </div>
+
+      <div class="block-label">Exercise 3 — write your own sentences</div>
+      <div class="exercise-block">
+        <div class="ex-header">
+          <span class="ex-badge exb-purple">Exercise 3</span>
+          <span class="ex-title">Write sentences about your real life — Neva, your job, your day</span>
+        </div>
+
+        <div class="q-item">
+          <div class="q-text">Write a present perfect sentence using <strong>since</strong> (about your job or living in Ankara)</div>
+          <textarea class="q-textarea" id="e3q1" placeholder="I have…" oninput="trackProgress()"></textarea>
+        </div>
+        <div class="q-item">
+          <div class="q-text">Write a present perfect sentence using <strong>just</strong> (something that happened very recently — today or this week)</div>
+          <textarea class="q-textarea" id="e3q2" placeholder="I have just…" oninput="trackProgress()"></textarea>
+        </div>
+        <div class="q-item">
+          <div class="q-text">Write a past perfect sentence about Neva — something that had already happened before something else</div>
+          <textarea class="q-textarea" id="e3q3" placeholder="Neva had already… when I…" oninput="trackProgress()"></textarea>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ======= SECTION 2: PREPOSITIONS ======= -->
+  <div class="accordion" id="acc2">
+    <button class="acc-trigger" onclick="toggleAcc('acc2')">
+      <div class="acc-num num-coral">2</div>
+      <div class="acc-heading">
+        <span class="acc-title">Prepositions — in, on, at</span>
+        <span class="acc-sub">The three prepositions that cause the most trouble for Turkish speakers</span>
+      </div>
+      <div class="acc-meta">
+        <span class="acc-tag tag-coral">Writing</span>
+        <div class="acc-arrow">▼</div>
+      </div>
+    </button>
+    <div class="acc-body">
+
+      <div class="block-label">Why these three are tricky</div>
+      <div class="explain-box">
+        <p>In Turkish, one word often covers what English splits into three. This means your brain is searching for one rule, but English has three! The good news is that the rules are logical — once you see the pattern, it clicks.</p>
+        <p>Think of them as <strong>circles of size:</strong> <span style="color:var(--teal);font-weight:600">AT</span> is the smallest (a specific point) · <span style="color:var(--coral);font-weight:600">ON</span> is medium (a surface or line) · <span style="color:var(--gold);font-weight:600">IN</span> is the largest (inside a space)</p>
+      </div>
+
+      <div class="block-label">The rules — place</div>
+      <table class="prep-table">
+        <tr>
+          <th class="col-at">AT</th>
+          <th class="col-on">ON</th>
+          <th class="col-in">IN</th>
+        </tr>
+        <tr>
+          <td>A specific point or location<br><em>at the office, at home, at the lab, at the door, at work</em></td>
+          <td>A surface, or transport<br><em>on the table, on the bus, on the train, on the computer, on the phone</em></td>
+          <td>Inside a space, city, country<br><em>in Ankara, in Turkey, in the room, in the lab, in the car</em></td>
+        </tr>
+      </table>
+
+      <div class="block-label">The rules — time</div>
+      <table class="prep-table">
+        <tr>
+          <th class="col-at">AT</th>
+          <th class="col-on">ON</th>
+          <th class="col-in">IN</th>
+        </tr>
+        <tr>
+          <td>Specific time or holiday<br><em>at 8am, at noon, at night, at the weekend, at Easter</em></td>
+          <td>Day or specific date<br><em>on Monday, on 18 April, on my birthday, on weekdays</em></td>
+          <td>Month, year, season, longer period<br><em>in April, in 2024, in the morning, in summer, in the future</em></td>
+        </tr>
+      </table>
+
+      <div class="rule-grid">
+        <div class="rule-card rc-teal">
+          <div class="rule-name">AT — think: exact point</div>
+          <div class="rule-text">Smallest reference. You can point to it on a map or clock.</div>
+          <div class="rule-example">"I start <strong>at</strong> 8am." / "She's <strong>at</strong> the office."</div>
+        </div>
+        <div class="rule-card rc-coral">
+          <div class="rule-name">ON — think: surface / line</div>
+          <div class="rule-text">Days are "lines" in your calendar. Surfaces are flat.</div>
+          <div class="rule-example">"<strong>On</strong> Monday morning." / "It's <strong>on</strong> the table."</div>
+        </div>
+        <div class="rule-card rc-gold">
+          <div class="rule-name">IN — think: container / space</div>
+          <div class="rule-text">You are inside something — a city, a room, a period of time.</div>
+          <div class="rule-example">"I live <strong>in</strong> Ankara." / "<strong>In</strong> the morning."</div>
+        </div>
+      </div>
+
+      <div class="block-label">Common mistakes</div>
+      <div class="ex-pair">
+        <div class="ex-wrong">"I start work in 8am."</div>
+        <div class="ex-right">"I start work at 8am." — specific clock time = AT</div>
+      </div>
+      <div class="ex-pair">
+        <div class="ex-wrong">"I'll see you in Monday."</div>
+        <div class="ex-right">"I'll see you on Monday." — day of the week = ON</div>
+      </div>
+      <div class="ex-pair">
+        <div class="ex-wrong">"She works on the R&D department."</div>
+        <div class="ex-right">"She works in the R&D department." — inside a department/place = IN</div>
+      </div>
+      <div class="ex-pair">
+        <div class="ex-wrong">"I'll call you on the morning."</div>
+        <div class="ex-right">"I'll call you in the morning." — longer period of day = IN</div>
+      </div>
+
+      <div class="block-label">Exercise 1 — fill in the blank</div>
+      <div class="exercise-block">
+        <div class="ex-header">
+          <span class="ex-badge exb-coral">Exercise 1</span>
+          <span class="ex-title">Choose in, on, or at</span>
+        </div>
+
+        <div class="q-item">
+          <div class="blank-sentence">1. I wake up _____ 6am every morning.</div>
+          <input class="q-input" id="p1q1" placeholder="in / on / at" oninput="trackProgress()">
+          <button class="check-btn" onclick="checkBlank('p1q1',['at'],'p1q1fb')">Check</button>
+          <div class="feedback-row" id="p1q1fb"></div>
+        </div>
+        <div class="q-item">
+          <div class="blank-sentence">2. The exam is _____ Monday.</div>
+          <input class="q-input" id="p1q2" placeholder="in / on / at" oninput="trackProgress()">
+          <button class="check-btn" onclick="checkBlank('p1q2',['on'],'p1q2fb')">Check</button>
+          <div class="feedback-row" id="p1q2fb"></div>
+        </div>
+        <div class="q-item">
+          <div class="blank-sentence">3. She works _____ the R&D department.</div>
+          <input class="q-input" id="p1q3" placeholder="in / on / at" oninput="trackProgress()">
+          <button class="check-btn" onclick="checkBlank('p1q3',['in'],'p1q3fb')">Check</button>
+          <div class="feedback-row" id="p1q3fb"></div>
+        </div>
+        <div class="q-item">
+          <div class="blank-sentence">4. I drive to work _____ the morning.</div>
+          <input class="q-input" id="p1q4" placeholder="in / on / at" oninput="trackProgress()">
+          <button class="check-btn" onclick="checkBlank('p1q4',['in'],'p1q4fb')">Check</button>
+          <div class="feedback-row" id="p1q4fb"></div>
+        </div>
+        <div class="q-item">
+          <div class="blank-sentence">5. Neva had her vaccinations _____ April.</div>
+          <input class="q-input" id="p1q5" placeholder="in / on / at" oninput="trackProgress()">
+          <button class="check-btn" onclick="checkBlank('p1q5',['in'],'p1q5fb')">Check</button>
+          <div class="feedback-row" id="p1q5fb"></div>
+        </div>
+        <div class="q-item">
+          <div class="blank-sentence">6. I'll be _____ work from 8am.</div>
+          <input class="q-input" id="p1q6" placeholder="in / on / at" oninput="trackProgress()">
+          <button class="check-btn" onclick="checkBlank('p1q6',['at'],'p1q6fb')">Check</button>
+          <div class="feedback-row" id="p1q6fb"></div>
+        </div>
+        <div class="q-item">
+          <div class="blank-sentence">7. The results were published _____ 2023.</div>
+          <input class="q-input" id="p1q7" placeholder="in / on / at" oninput="trackProgress()">
+          <button class="check-btn" onclick="checkBlank('p1q7',['in'],'p1q7fb')">Check</button>
+          <div class="feedback-row" id="p1q7fb"></div>
+        </div>
+        <div class="q-item">
+          <div class="blank-sentence">8. The report is _____ the table _____ the lab.</div>
+          <input class="q-input" id="p1q8" placeholder="on … in" oninput="trackProgress()">
+          <button class="check-btn" onclick="checkBlank('p1q8',['on … in','on...in','on ... in'],'p1q8fb')">Check</button>
+          <div class="feedback-row" id="p1q8fb"></div>
+        </div>
+      </div>
+
+      <div class="block-label">Exercise 2 — write your own sentences</div>
+      <div class="exercise-block">
+        <div class="ex-header">
+          <span class="ex-badge exb-purple">Exercise 2</span>
+          <span class="ex-title">Write 5 sentences from your real daily life — one for each prompt below</span>
+        </div>
+        <div class="q-item">
+          <div class="q-text">Write a sentence using <strong>at</strong> (about your work schedule or location)</div>
+          <textarea class="q-textarea" id="pw1" placeholder="I am / I start / I arrive… at…" oninput="trackProgress()"></textarea>
+        </div>
+        <div class="q-item">
+          <div class="q-text">Write a sentence using <strong>on</strong> (about a day this week)</div>
+          <textarea class="q-textarea" id="pw2" placeholder="On Monday / On Tuesday…" oninput="trackProgress()"></textarea>
+        </div>
+        <div class="q-item">
+          <div class="q-text">Write a sentence using <strong>in</strong> (about Ankara or the R&D department)</div>
+          <textarea class="q-textarea" id="pw3" placeholder="In Ankara / In the department…" oninput="trackProgress()"></textarea>
+        </div>
+        <div class="q-item">
+          <div class="q-text">Write a sentence using <strong>in the morning / afternoon / evening</strong></div>
+          <textarea class="q-textarea" id="pw4" placeholder="In the morning, I…" oninput="trackProgress()"></textarea>
+        </div>
+        <div class="q-item">
+          <div class="q-text">Write a sentence about Neva using at, on, OR in</div>
+          <textarea class="q-textarea" id="pw5" placeholder="Neva… at / on / in…" oninput="trackProgress()"></textarea>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ======= SECTION 3: SPEAKING ======= -->
+  <div class="accordion" id="acc3">
+    <button class="acc-trigger" onclick="toggleAcc('acc3')">
+      <div class="acc-num num-gold">3</div>
+      <div class="acc-heading">
+        <span class="acc-title">Speaking practice</span>
+        <span class="acc-sub">5 minutes a day — daily prompts and sentence starters for you</span>
+      </div>
+      <div class="acc-meta">
+        <span class="acc-tag tag-gold">Speaking</span>
+        <div class="acc-arrow">▼</div>
+      </div>
+    </button>
+    <div class="acc-body">
+
+      <div class="block-label">Why this works</div>
+      <div class="tip-box" style="margin-bottom:1rem">
+        <strong>The goal is not to be perfect — it's to get your brain used to producing English directly.</strong> Right now, your brain translates from Turkish first. Speaking out loud every day, even for 5 minutes, trains a shortcut that bypasses the translation step. Over time it becomes automatic. The car on your commute is perfect for this — no one is listening, no pressure!
+      </div>
+
+      <div class="block-label">How to do it — simple steps</div>
+      <div class="explain-box">
+        <p><strong>Step 1:</strong> Choose the day's topic below (or make up your own).</p>
+        <p><strong>Step 2:</strong> Use the sentence starter if you get stuck — then keep going.</p>
+        <p><strong>Step 3:</strong> Speak for at least 3–5 sentences without stopping. If you don't know a word, describe it instead!</p>
+        <p><strong>Step 4:</strong> Don't correct yourself as you go. Finish the idea first, then you can go back.</p>
+      </div>
+
+      <div class="block-label">Your daily prompts — Thursday to Monday</div>
+      <div class="prompt-grid">
+        <div class="prompt-card pc-mon">
+          <div class="day-label">Today (Saturday)</div>
+          <div class="day-prompt">Describe your morning today. What happened before you sat down?</div>
+          <div class="day-starter">Starter: "This morning I woke up at… and the first thing I did was…"</div>
+        </div>
+        <div class="prompt-card pc-tue">
+          <div class="day-label">Tomorrow (Sunday)</div>
+          <div class="day-prompt">Tell me about Neva. What did she do this week that made you smile?</div>
+          <div class="day-starter">Starter: "This week, Neva… It was so funny/sweet/surprising because…"</div>
+        </div>
+        <div class="prompt-card pc-wed">
+          <div class="day-label">Sunday evening</div>
+          <div class="day-prompt">Describe your new job. What do you actually do day to day?</div>
+          <div class="day-starter">Starter: "I work in the R&D department and my job involves… My favourite part is…"</div>
+        </div>
+        <div class="prompt-card pc-thu">
+          <div class="day-label">Monday morning (exam day!)</div>
+          <div class="day-prompt">On your commute, talk about something you are looking forward to this month.</div>
+          <div class="day-starter">Starter: "Something I'm really looking forward to is… because…"</div>
+        </div>
+      </div>
+
+      <div class="block-label">Extra prompts — if you want more practice</div>
+      <div class="rule-grid">
+        <div class="rule-card rc-teal">
+          <div class="rule-name">About your work</div>
+          <div class="rule-text">Describe a recent experiment or project. What were the steps? What happened?</div>
+          <div class="rule-example">Starter: "Recently at work, we have been…"</div>
+        </div>
+        <div class="rule-card rc-coral">
+          <div class="rule-name">About your routine</div>
+          <div class="rule-text">Describe a typical weekday — from waking up to arriving at work.</div>
+          <div class="rule-example">Starter: "On a typical weekday, I wake up at 6am and…"</div>
+        </div>
+        <div class="rule-card rc-gold">
+          <div class="rule-name">Opinion practice</div>
+          <div class="rule-text">Do you think working in an R&D department is better than other engineering roles? Why?</div>
+          <div class="rule-example">Starter: "In my opinion, R&D is… because… although…"</div>
+        </div>
+        <div class="rule-card rc-purple">
+          <div class="rule-name">İTEP speaking style</div>
+          <div class="rule-text">The exam will ask you to give an opinion. Practise this structure: agree/disagree + reason + example.</div>
+          <div class="rule-example">Starter: "I think that… because… For example, in my own life…"</div>
+        </div>
+      </div>
+
+      <div class="block-label">Useful phrases when you get stuck</div>
+      <div class="explain-box">
+        <p>These are natural phrases that real English speakers use when they need a moment. Use them in the exam too — they sound confident, not hesitant.</p>
+      </div>
+      <div class="rule-grid">
+        <div class="rule-card rc-teal">
+          <div class="rule-name">Buying yourself time</div>
+          <div class="rule-text">"That's a good question…" · "Let me think about that for a second…" · "Well, to be honest…"</div>
+        </div>
+        <div class="rule-card rc-coral">
+          <div class="rule-name">When you forget a word</div>
+          <div class="rule-text">"The thing you use for…" · "It's similar to…" · "I can't remember the exact word, but it means…"</div>
+        </div>
+        <div class="rule-card rc-gold">
+          <div class="rule-name">Adding to your answer</div>
+          <div class="rule-text">"What's more…" · "Also…" · "Another thing I'd like to add is…" · "For example, in my case…"</div>
+        </div>
+        <div class="rule-card rc-purple">
+          <div class="rule-name">Finishing strongly</div>
+          <div class="rule-text">"So overall, I think…" · "To sum up…" · "That's why I believe…"</div>
+        </div>
+      </div>
+
+      <div class="block-label">Your speaking log — optional but helpful</div>
+      <div class="exercise-block">
+        <div class="ex-header">
+          <span class="ex-badge exb-gold">Reflection</span>
+          <span class="ex-title">After each speaking session, jot down a word or two</span>
+        </div>
+        <div class="q-item">
+          <div class="q-text">Saturday — one thing that felt easy today</div>
+          <textarea class="q-textarea" id="sp1" placeholder="e.g. I found it easy to describe Neva…" oninput="trackProgress()"></textarea>
+        </div>
+        <div class="q-item">
+          <div class="q-text">Sunday — one word or phrase you couldn't remember (write it in Turkish if needed!)</div>
+          <textarea class="q-textarea" id="sp2" placeholder="e.g. I couldn't remember how to say 'merak etmek'… the word is: to be curious about / to wonder" oninput="trackProgress()"></textarea>
+        </div>
+        <div class="q-item">
+          <div class="q-text">Any other notes for Bernice from your practice this week</div>
+          <textarea class="q-textarea" id="sp3" placeholder="e.g. I noticed I always pause before verb tenses…" oninput="trackProgress()"></textarea>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="tip-box" style="margin-top:0.5rem">
+    <strong>You don't need to finish everything in one sitting.</strong> Work through one section at a time. The exercises are here to help you think, not to stress you out. Bring your written answers to our next lesson — we'll go through them together. Good luck on Monday, Seda! 🌿
+  </div>
+
+</div>
+
+<script>
+function toggleAcc(id) {
+  const el = document.getElementById(id);
+  el.classList.toggle('open');
+}
+
+function normalise(str) {
+  return str.trim().toLowerCase().replace(/['']/g,"'").replace(/\s+/g,' ');
+}
+
+function checkBlank(inputId, answers, fbId) {
+  const val = normalise(document.getElementById(inputId).value);
+  const input = document.getElementById(inputId);
+  const fb = document.getElementById(fbId);
+  const match = answers.some(a => normalise(a) === val);
+  if (!val) { fb.innerHTML = ''; return; }
+  if (match) {
+    input.classList.add('correct'); input.classList.remove('incorrect');
+    fb.innerHTML = '<span class="fb-correct">✓ Correct!</span>';
+  } else {
+    input.classList.add('incorrect'); input.classList.remove('correct');
+    fb.innerHTML = '<span class="fb-incorrect">Not quite.</span> <span class="fb-answer">Expected: ' + answers[0] + '</span>';
+  }
+  trackProgress();
+}
+
+function trackProgress() {
+  const allInputs = document.querySelectorAll('.q-input, .q-textarea');
+  let filled = 0;
+  allInputs.forEach(i => { if (i.value.trim().length > 0) filled++; });
+  const pct = Math.round((filled / allInputs.length) * 100);
+  document.getElementById('pct').textContent = pct;
+  document.getElementById('progressFill').style.width = pct + '%';
+}
+</script>
+</body>
+</html>
