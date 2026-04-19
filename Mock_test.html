@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>iTEP Mock Test — In-Lesson Version</title>
+<style>
+:root {
+  --bg: #f7f8fa;
+  --white: #ffffff;
+  --ink: #1a1d23;
+  --ink-soft: #4a5060;
+  --ink-muted: #8a909e;
+  --border: #dde1e9;
+  --border-dark: #b8bfcc;
+  --accent: #1a3a6b;
+  --accent-light: #e8edf5;
+  --accent-mid: #4a70b0;
+  --correct: #1a6b45;
+  --correct-bg: #eaf5f0;
+  --correct-border: #7ec9a8;
+  --wrong: #8b2020;
+  --wrong-bg: #fdf0f0;
+  --wrong-border: #e8a0a0;
+  --warn: #7a5010;
+  --warn-bg: #fdf6e8;
+  --warn-border: #e8c878;
+  --section-grammar: #1a3a6b;
+  --section-writing: #2d6b4a;
+  --section-speaking: #4a2d6b;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Georgia', serif; background: var(--bg); color: var(--ink); font-size: 16px; line-height: 1.6; }
+
+/* HEADER */
+.exam-header {
+  background: var(--accent);
+  color: white;
+  padding: 0;
+}
+.exam-header-inner {
+  max-width: 860px; margin: 0 auto;
+  padding: 2rem 2rem 1.5rem;
+}
+.exam-logo {
+  font-family: 'Georgia', serif;
+  font-size: 11px; font-weight: normal;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  color: rgba(255,255,255,0.6); margin-bottom: 0.6rem;
+}
+.exam-header h1 {
+  font-size: 24px; font-weight: normal; letter-spacing: 0.01em;
+  color: white; margin-bottom: 0.3rem;
+}
+.exam-header-sub { font-size: 14px; color: rgba(255,255,255,0.7); font-family: Arial, sans-serif; }
+.exam-meta-bar {
+  background: rgba(0,0,0,0.15);
+  padding: 0.75rem 2rem;
+}
+.exam-meta-inner {
+  max-width: 860px; margin: 0 auto;
+  display: flex; gap: 2rem; flex-wrap: wrap;
+}
+.meta-item { font-size: 12px; font-family: Arial, sans-serif; color: rgba(255,255,255,0.8); letter-spacing: 0.04em; }
+.meta-item strong { color: white; }
+
+/* NOTICE */
+.notice-bar {
+  background: var(--warn-bg); border-bottom: 1px solid var(--warn-border);
+  padding: 0.75rem 2rem;
+}
+.notice-inner {
+  max-width: 860px; margin: 0 auto;
+  font-size: 13px; font-family: Arial, sans-serif;
+  color: var(--warn); display: flex; align-items: center; gap: 8px;
+}
+
+/* SECTION NAV */
+.section-nav {
+  background: var(--white); border-bottom: 1px solid var(--border);
+  position: sticky; top: 0; z-index: 100;
+}
+.section-nav-inner {
+  max-width: 860px; margin: 0 auto;
+  display: flex; overflow-x: auto;
+}
+.nav-tab {
+  padding: 1rem 1.5rem; font-size: 13px; font-family: Arial, sans-serif;
+  font-weight: bold; letter-spacing: 0.04em; text-transform: uppercase;
+  border: none; background: none; cursor: pointer;
+  color: var(--ink-muted); border-bottom: 3px solid transparent;
+  white-space: nowrap; transition: all 0.2s;
+}
+.nav-tab:hover { color: var(--ink); }
+.nav-tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+.nav-tab.completed { color: var(--correct); }
+.nav-tab.completed::after { content: ' ✓'; }
+
+/* MAIN */
+.main { max-width: 860px; margin: 0 auto; padding: 2rem; }
+
+/* SECTION PANEL */
+.section-panel { display: none; }
+.section-panel.active { display: block; }
+
+/* SECTION HEADER */
+.section-header {
+  border: 1px solid var(--border);
+  border-radius: 4px; overflow: hidden; margin-bottom: 2rem;
+}
+.section-header-top {
+  padding: 1.25rem 1.5rem;
+  display: flex; justify-content: space-between; align-items: flex-start;
+}
+.sh-grammar { background: var(--section-grammar); }
+.sh-writing { background: var(--section-writing); }
+.sh-speaking { background: var(--section-speaking); }
+.section-header-top h2 {
+  font-size: 18px; font-weight: normal; color: white;
+  letter-spacing: 0.04em; text-transform: uppercase; font-family: Arial, sans-serif;
+}
+.section-header-top .section-num {
+  font-size: 12px; color: rgba(255,255,255,0.6); font-family: Arial, sans-serif;
+  letter-spacing: 0.08em; text-transform: uppercase; margin-top: 3px;
+}
+.section-score-badge {
+  background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3);
+  padding: 4px 14px; border-radius: 2px;
+  font-size: 12px; color: white; font-family: Arial, sans-serif; letter-spacing: 0.05em;
+}
+.section-instructions {
+  background: var(--accent-light); border-top: 1px solid var(--border);
+  padding: 1rem 1.5rem;
+}
+.section-instructions p {
+  font-size: 13px; font-family: Arial, sans-serif;
+  color: var(--ink-soft); line-height: 1.6; margin-bottom: 0.3rem;
+}
+.section-instructions p:last-child { margin-bottom: 0; }
+.section-instructions strong { color: var(--ink); }
+
+/* QUESTION BLOCKS */
+.q-block {
+  background: var(--white); border: 1px solid var(--border);
+  border-radius: 4px; margin-bottom: 1.25rem; overflow: hidden;
+}
+.q-block-header {
+  background: var(--bg); border-bottom: 1px solid var(--border);
+  padding: 0.6rem 1.25rem;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.q-num {
+  font-size: 11px; font-family: Arial, sans-serif; font-weight: bold;
+  letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-muted);
+}
+.q-type-tag {
+  font-size: 10px; font-family: Arial, sans-serif; font-weight: bold;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  padding: 2px 8px; border-radius: 2px;
+}
+.qt-grammar { background: #e8edf5; color: var(--section-grammar); }
+.qt-writing { background: #eaf5f0; color: var(--section-writing); }
+.qt-speaking { background: #f0ebf8; color: var(--section-speaking); }
+
+.q-body { padding: 1.25rem 1.5rem; }
+.q-text {
+  font-size: 15px; color: var(--ink); margin-bottom: 1rem; line-height: 1.7;
+}
+.q-text em { color: var(--ink-soft); }
+.q-passage {
+  background: var(--bg); border-left: 3px solid var(--border-dark);
+  padding: 1rem 1.25rem; margin-bottom: 1rem; border-radius: 0 4px 4px 0;
+  font-size: 14px; line-height: 1.8; color: var(--ink-soft);
+  font-style: italic;
+}
+
+/* MULTIPLE CHOICE */
+.mc-options { display: flex; flex-direction: column; gap: 8px; }
+.mc-option {
+  display: flex; align-items: flex-start; gap: 12px;
+  padding: 10px 14px; border: 1px solid var(--border);
+  border-radius: 3px; cursor: pointer; font-family: Arial, sans-serif;
+  font-size: 14px; transition: all 0.15s; background: var(--white);
+  user-select: none;
+}
+.mc-option:hover { border-color: var(--accent-mid); background: var(--accent-light); }
+.mc-option.selected { border-color: var(--accent); background: var(--accent-light); }
+.mc-option.correct { border-color: var(--correct-border); background: var(--correct-bg); color: var(--correct); }
+.mc-option.wrong { border-color: var(--wrong-border); background: var(--wrong-bg); color: var(--wrong); }
+.mc-option.show-correct { border-color: var(--correct-border); background: var(--correct-bg); color: var(--correct); }
+.mc-letter {
+  width: 22px; height: 22px; border-radius: 50%; border: 1.5px solid var(--border-dark);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: bold; flex-shrink: 0; margin-top: 1px;
+  color: var(--ink-soft);
+}
+.mc-option.selected .mc-letter { border-color: var(--accent); color: var(--accent); background: white; }
+.mc-option.correct .mc-letter { border-color: var(--correct); color: var(--correct); }
+.mc-option.wrong .mc-letter { border-color: var(--wrong); color: var(--wrong); }
+
+/* TEXT INPUTS */
+.exam-input {
+  width: 100%; border: 1px solid var(--border-dark);
+  border-radius: 3px; padding: 10px 14px;
+  font-size: 14px; font-family: Arial, sans-serif;
+  color: var(--ink); background: var(--white); outline: none;
+  transition: border-color 0.2s;
+}
+.exam-input:focus { border-color: var(--accent); }
+.exam-input.correct { border-color: var(--correct-border); background: var(--correct-bg); }
+.exam-input.wrong { border-color: var(--wrong-border); background: var(--wrong-bg); }
+
+.exam-textarea {
+  width: 100%; border: 1px solid var(--border-dark);
+  border-radius: 3px; padding: 10px 14px;
+  font-size: 14px; font-family: Arial, sans-serif;
+  color: var(--ink); background: var(--white); outline: none;
+  resize: vertical; min-height: 100px; transition: border-color 0.2s;
+}
+.exam-textarea:focus { border-color: var(--accent); }
+
+/* FEEDBACK */
+.q-feedback {
+  margin-top: 10px; padding: 8px 14px; border-radius: 3px;
+  font-size: 13px; font-family: Arial, sans-serif; display: none;
+  line-height: 1.5;
+}
+.fb-correct { background: var(--correct-bg); border: 1px solid var(--correct-border); color: var(--correct); }
+.fb-wrong { background: var(--wrong-bg); border: 1px solid var(--wrong-border); color: var(--wrong); }
+.fb-neutral { background: var(--warn-bg); border: 1px solid var(--warn-border); color: var(--warn); }
+
+/* BUTTONS */
+.btn-row { display: flex; gap: 10px; margin-top: 10px; flex-wrap: wrap; }
+.btn-check {
+  padding: 8px 20px; border: 1px solid var(--accent);
+  background: var(--white); color: var(--accent);
+  font-family: Arial, sans-serif; font-size: 13px; font-weight: bold;
+  letter-spacing: 0.04em; text-transform: uppercase;
+  border-radius: 3px; cursor: pointer; transition: all 0.15s;
+}
+.btn-check:hover { background: var(--accent); color: white; }
+
+.btn-next-section {
+  display: block; width: 100%;
+  padding: 1rem; margin-top: 2rem;
+  background: var(--accent); color: white; border: none;
+  font-family: Arial, sans-serif; font-size: 14px; font-weight: bold;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  border-radius: 4px; cursor: pointer; transition: background 0.2s;
+  text-align: center;
+}
+.btn-next-section:hover { background: #0f2550; }
+
+/* SECTION SCORE */
+.section-score-bar {
+  background: var(--white); border: 1px solid var(--border);
+  border-radius: 4px; padding: 1.25rem 1.5rem; margin-top: 1.5rem;
+  display: none;
+}
+.score-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+.score-title { font-size: 14px; font-family: Arial, sans-serif; font-weight: bold; color: var(--ink); text-transform: uppercase; letter-spacing: 0.05em; }
+.score-val { font-size: 24px; font-family: Georgia, serif; color: var(--accent); }
+.score-track { background: var(--bg); border-radius: 2px; height: 6px; overflow: hidden; margin-bottom: 8px; }
+.score-fill { height: 100%; background: var(--accent); border-radius: 2px; transition: width 0.6s ease; }
+.score-note { font-size: 12px; font-family: Arial, sans-serif; color: var(--ink-muted); }
+
+/* WRITING RUBRIC */
+.rubric-table { width: 100%; border-collapse: collapse; font-size: 13px; font-family: Arial, sans-serif; margin-top: 10px; }
+.rubric-table th { text-align: left; padding: 7px 10px; background: var(--bg); border: 1px solid var(--border); font-weight: bold; color: var(--ink-soft); text-transform: uppercase; letter-spacing: 0.05em; font-size: 11px; }
+.rubric-table td { padding: 7px 10px; border: 1px solid var(--border); color: var(--ink-soft); vertical-align: top; }
+
+/* SPEAKING PROMPT */
+.speaking-prompt-box {
+  background: var(--section-speaking);
+  color: white; padding: 1.25rem 1.5rem; border-radius: 4px; margin-bottom: 1rem;
+}
+.speaking-prompt-box .sp-label { font-size: 11px; font-family: Arial, sans-serif; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: 6px; }
+.speaking-prompt-box .sp-text { font-size: 16px; line-height: 1.6; }
+.speaking-prep { font-size: 13px; font-family: Arial, sans-serif; color: var(--ink-muted); margin-bottom: 8px; }
+
+/* RESULTS */
+.results-panel { display: none; }
+.results-panel.active { display: block; }
+.results-header {
+  background: var(--accent); color: white;
+  padding: 2rem; border-radius: 4px; margin-bottom: 1.5rem; text-align: center;
+}
+.results-header h2 { font-size: 22px; font-weight: normal; margin-bottom: 0.5rem; }
+.results-header p { font-size: 14px; font-family: Arial, sans-serif; color: rgba(255,255,255,0.7); }
+.results-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; margin-bottom: 1.5rem; }
+.result-card { background: var(--white); border: 1px solid var(--border); border-radius: 4px; padding: 1.25rem; text-align: center; }
+.result-card .rc-section { font-size: 11px; font-family: Arial, sans-serif; font-weight: bold; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-muted); margin-bottom: 8px; }
+.result-card .rc-score { font-size: 36px; font-family: Georgia, serif; color: var(--accent); }
+.result-card .rc-label { font-size: 12px; font-family: Arial, sans-serif; color: var(--ink-muted); margin-top: 4px; }
+.feedback-summary {
+  background: var(--white); border: 1px solid var(--border);
+  border-radius: 4px; padding: 1.5rem;
+}
+.feedback-summary h3 { font-size: 16px; margin-bottom: 1rem; font-family: Arial, sans-serif; text-transform: uppercase; letter-spacing: 0.05em; color: var(--ink); font-weight: bold; }
+.feedback-item { padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 14px; font-family: Arial, sans-serif; color: var(--ink-soft); line-height: 1.6; }
+.feedback-item:last-child { border-bottom: none; }
+.feedback-item strong { color: var(--ink); }
+
+@media(max-width:600px) {
+  .main { padding: 1rem; }
+  .exam-header-inner { padding: 1.25rem; }
+  .section-header-top { flex-direction: column; gap: 8px; }
+}
+</style>
+</head>
+<body>
+
+<div class="exam-header">
+  <div class="exam-header-inner">
+    <div class="exam-logo">International Test of English Proficiency</div>
+    <h1>iTEP Academic — Practice Test</h1>
+    <div class="exam-header-sub">In-Lesson Version &nbsp;·&nbsp; Grammar · Writing · Speaking &nbsp;·&nbsp; No time limit</div>
+  </div>
+  <div class="exam-meta-bar">
+    <div class="exam-meta-inner">
+      <div class="meta-item">Student: <strong>Seda Kutluata</strong></div>
+      <div class="meta-item">Level: <strong>Intermediate (B1–B2)</strong></div>
+      <div class="meta-item">Sections: <strong>3</strong></div>
+      <div class="meta-item">Version: <strong>In-lesson (untimed)</strong></div>
+    </div>
+  </div>
+</div>
+
+<div class="notice-bar">
+  <div class="notice-inner">
+    ⚠ &nbsp;<strong>In-lesson version:</strong> No timer. Work through each section with your teacher. Read every question carefully before answering.
+  </div>
+</div>
+
+<div class="section-nav">
+  <div class="section-nav-inner">
+    <button class="nav-tab active" id="nav-grammar" onclick="goSection('grammar')">Section 1 — Grammar</button>
+    <button class="nav-tab" id="nav-writing" onclick="goSection('writing')">Section 2 — Writing</button>
+    <button class="nav-tab" id="nav-speaking" onclick="goSection('speaking')">Section 3 — Speaking</button>
+    <button class="nav-tab" id="nav-results" onclick="goSection('results')">Results</button>
+  </div>
+</div>
+
+<div class="main">
+
+<!-- ==================== GRAMMAR ==================== -->
+<div class="section-panel active" id="panel-grammar">
+  <div class="section-header">
+    <div class="section-header-top sh-grammar">
+      <div>
+        <div class="section-num">Section 1 of 3</div>
+        <h2>Grammar</h2>
+      </div>
+      <div class="section-score-badge" id="grammar-score-badge">0 / 12</div>
+    </div>
+    <div class="section-instructions">
+      <p><strong>Instructions:</strong> Choose the word or phrase that best completes each sentence. Select one answer only.</p>
+      <p>There are <strong>12 questions</strong> in this section. Read each sentence carefully before choosing.</p>
+    </div>
+  </div>
+
+  <!-- Q1 -->
+  <div class="q-block">
+    <div class="q-block-header"><span class="q-num">Question 1</span><span class="q-type-tag qt-grammar">Multiple Choice</span></div>
+    <div class="q-body">
+      <div class="q-text">She _______ in the R&D department since she started her new job in January.</div>
+      <div class="mc-options" id="g1">
+        <div class="mc-option" onclick="selectMC('g1',this,'A')"><div class="mc-letter">A</div>works</div>
+        <div class="mc-option" onclick="selectMC('g1',this,'B')"><div class="mc-letter">B</div>has been working</div>
+        <div class="mc-option" onclick="selectMC('g1',this,'C')"><div class="mc-letter">C</div>was working</div>
+        <div class="mc-option" onclick="selectMC('g1',this,'D')"><div class="mc-letter">D</div>had worked</div>
+      </div>
+      <div class="btn-row"><button class="btn-check" onclick="checkMC('g1','B','g1fb','grammar')">Check Answer</button></div>
+      <div class="q-feedback" id="g1fb"></div>
+    </div>
+  </div>
+
+  <!-- Q2 -->
+  <div class="q-block">
+    <div class="q-block-header"><span class="q-num">Question 2</span><span class="q-type-tag qt-grammar">Multiple Choice</span></div>
+    <div class="q-body">
+      <div class="q-text">By the time the manager arrived, the team _______ the experiment.</div>
+      <div class="mc-options" id="g2">
+        <div class="mc-option" onclick="selectMC('g2',this,'A')"><div class="mc-letter">A</div>already finished</div>
+        <div class="mc-option" onclick="selectMC('g2',this,'B')"><div class="mc-letter">B</div>has already finished</div>
+        <div class="mc-option" onclick="selectMC('g2',this,'C')"><div class="mc-letter">C</div>had already finished</div>
+        <div class="mc-option" onclick="selectMC('g2',this,'D')"><div class="mc-letter">D</div>was already finishing</div>
+      </div>
+      <div class="btn-row"><button class="btn-check" onclick="checkMC('g2','C','g2fb','grammar')">Check Answer</button></div>
+      <div class="q-feedback" id="g2fb"></div>
+    </div>
+  </div>
+
+  <!-- Q3 -->
+  <div class="q-block">
+    <div class="q-block-header"><span class="q-num">Question 3</span><span class="q-type-tag qt-grammar">Multiple Choice</span></div>
+    <div class="q-body">
+      <div class="q-text">I _______ my colleague yesterday at the annual conference in Ankara.</div>
+      <div class="mc-options" id="g3">
+        <div class="mc-option" onclick="selectMC('g3',this,'A')"><div class="mc-letter">A</div>have met</div>
+        <div class="mc-option" onclick="selectMC('g3',this,'B')"><div class="mc-letter">B</div>had met</div>
+        <div class="mc-option" onclick="selectMC('g3',this,'C')"><div class="mc-letter">C</div>met</div>
+        <div class="mc-option" onclick="selectMC('g3',this,'D')"><div class="mc-letter">D</div>was meeting</div>
+      </div>
+      <div class="btn-row"><button class="btn-check" onclick="checkMC('g3','C','g3fb','grammar')">Check Answer</button></div>
+      <div class="q-feedback" id="g3fb"></div>
+    </div>
+  </div>
+
+  <!-- Q4 -->
+  <div class="q-block">
+    <div class="q-block-header"><span class="q-num">Question 4</span><span class="q-type-tag qt-grammar">Multiple Choice</span></div>
+    <div class="q-body">
+      <div class="q-text">The results of the analysis _______ to the board next Friday.</div>
+      <div class="mc-options" id="g4">
+        <div class="mc-option" onclick="selectMC('g4',this,'A')"><div class="mc-letter">A</div>will present</div>
+        <div class="mc-option" onclick="selectMC('g4',this,'B')"><div class="mc-letter">B</div>will be presented</div>
+        <div class="mc-option" onclick="selectMC('g4',this,'C')"><div class="mc-letter">C</div>are presented</div>
+        <div class="mc-option" onclick="selectMC('g4',this,'D')"><div class="mc-letter">D</div>have been presented</div>
+      </div>
+      <div class="btn-row"><button class="btn-check" onclick="checkMC('g4','B','g4fb','grammar')">Check Answer</button></div>
+      <div class="q-feedback" id="g4fb"></div>
+    </div>
+  </div>
+
+  <!-- Q5 -->
+  <div class="q-block">
+    <div class="q-block-header"><span class="q-num">Question 5</span><span class="q-type-tag qt-grammar">Multiple Choice</span></div>
+    <div class="q-body">
+      <div class="q-text">_______ you ever visited the production facility before your new role?</div>
+      <div class="mc-options" id="g5">
+        <div class="mc-option" onclick="selectMC('g5',this,'A')"><div class="mc-letter">A</div>Did</div>
+        <div class="mc-option" onclick="selectMC('g5',this,'B')"><div class="mc-letter">B</div>Have</div>
+        <div class="mc-option" onclick="selectMC('g5',this,'C')"><div class="mc-letter">C</div>Had</div>
+        <div class="mc-option" onclick="selectMC('g5',this,'D')"><div class="mc-letter">D</div>Were</div>
+      </div>
+      <div class="btn-row"><button class="btn-check" onclick="checkMC('g5','B','g5fb','grammar')">Check Answer</button></div>
+      <div class="q-feedback" id="g5fb"></div>
+    </div>
+  </div>
+
+  <!-- Q6 -->
+  <div class="q-block">
+    <div class="q-block-header"><span class="q-num">Question 6</span><span class="q-type-tag qt-grammar">Multiple Choice</span></div>
+    <div class="q-body">
+      <div class="q-text">Neither the samples nor the equipment _______ ready when the inspection began.</div>
+      <div class="mc-options" id="g6">
+        <div class="mc-option" onclick="selectMC('g6',this,'A')"><div class="mc-letter">A</div>were</div>
+        <div class="mc-option" onclick="selectMC('g6',this,'B')"><div class="mc-letter">B</div>was</div>
+        <div class="mc-option" onclick="selectMC('g6',this,'C')"><div class="mc-letter">C</div>are</div>
+        <div class="mc-option" onclick="selectMC('g6',this,'D')"><div class="mc-letter">D</div>have been</div>
+      </div>
+      <div class="btn-row"><button class="btn-check" onclick="checkMC('g6','B','g6fb','grammar')">Check Answer</button></div>
+      <div class="q-feedback" id="g6fb"></div>
+    </div>
+  </div>
+
+  <!-- Q7 -->
+  <div class="q-block">
+    <div class="q-block-header"><span class="q-num">Question 7</span><span class="q-type-tag qt-grammar">Multiple Choice</span></div>
+    <div class="q-body">
+      <div class="q-text">If the formula _______ correctly, the product quality would improve significantly.</div>
+      <div class="mc-options" id="g7">
+        <div class="mc-option" onclick="selectMC('g7',this,'A')"><div class="mc-letter">A</div>adjusted</div>
+        <div class="mc-option" onclick="selectMC('g7',this,'B')"><div class="mc-letter">B</div>would adjust</div>
+        <div class="mc-option" onclick="selectMC('g7',this,'C')"><div class="mc-letter">C</div>were adjusted</div>
+        <div class="mc-option" onclick="selectMC('g7',this,'D')"><div class="mc-letter">D</div>has been adjusted</div>
+      </div>
+      <div class="btn-row"><button class="btn-check" onclick="checkMC('g7','C','g7fb','grammar')">Check Answer</button></div>
+      <div class="q-feedback" id="g7fb"></div>
+    </div>
+  </div>
+
+  <!-- Q8 -->
+  <div class="q-block">
+    <div class="q-block-header"><span class="q-num">Question 8</span><span class="q-type-tag qt-grammar">Multiple Choice</span></div>
+    <div class="q-body">
+      <div class="q-text">The engineer suggested _______ the experiment under different temperature conditions.</div>
+      <div class="mc-options" id="g8">
+        <div class="mc-option" onclick="selectMC('g8',this,'A')"><div class="mc-letter">A</div>to repeat</div>
+        <div class="mc-option" onclick="selectMC('g8',this,'B')"><div class="mc-letter">B</div>repeating</div>
+        <div class="mc-option" onclick="selectMC('g8',this,'C')"><div class="mc-letter">C</div>repeat</div>
+        <div class="mc-option" onclick="selectMC('g8',this,'D')"><div class="mc-letter">D</div>repeated</div>
+      </div>
+      <div class="btn-row"><button class="btn-check" onclick="checkMC('g8','B','g8fb','grammar')">Check Answer</button></div>
+      <div class="q-feedback" id="g8fb"></div>
+    </div>
+  </div>
+
+  <!-- Q9 -->
+  <div class="q-block">
+    <div class="q-block-header"><span class="q-num">Question 9</span><span class="q-type-tag qt-grammar">Multiple Choice</span></div>
+    <div class="q-body">
+      <div class="q-text">She is the engineer _______ developed the new baking soda formula last year.</div>
+      <div class="mc-options" id="g9">
+        <div class="mc-option" onclick="selectMC('g9',this,'A')"><div class="mc-letter">A</div>which</div>
+        <div class="mc-option" onclick="selectMC('g9',this,'B')"><div class="mc-letter">B</div>whom</div>
+        <div class="mc-option" onclick="selectMC('g9',this,'C')"><div class="mc-letter">C</div>who</div>
+        <div class="mc-option" onclick="selectMC('g9',this,'D')"><div class="mc-letter">D</div>whose</div>
+      </div>
+      <div class="btn-row"><button class="btn-check" onclick="checkMC('g9','C','g9fb','grammar')">Check Answer</button></div>
+      <div class="q-feedback" id="g9fb"></div>
+    </div>
+  </div>
+
+  <!-- Q10 -->
+  <div class="q-block">
+    <div class="q-block-header"><span class="q-num">Question 10</span><span class="q-type-tag qt-grammar">Multiple Choice</span></div>
+    <div class="q-body">
+      <div class="q-text">The report must be submitted _______ Friday morning _______ the latest.</div>
+      <div class="mc-options" id="g10">
+        <div class="mc-option" onclick="selectMC('g10',this,'A')"><div class="mc-letter">A</div>on … at</div>
+        <div class="mc-option" onclick="selectMC('g10',this,'B')"><div class="mc-letter">B</div>in … at</div>
+        <div class="mc-option" onclick="selectMC('g10',this,'C')"><div class="mc-letter">C</div>at … on</div>
+        <div class="mc-option" onclick="selectMC('g10',this,'D')"><div class="mc-letter">D</div>on … by</div>
+      </div>
+      <div class="btn-row"><button class="btn-check" onclick="checkMC('g10','A','g10fb','grammar')">Check Answer</button></div>
+      <div class="q-feedback" id="g10fb"></div>
+    </div>
+  </div>
+
+  <!-- Q11 -->
+  <div class="q-block">
+    <div class="q-block-header"><span class="q-num">Question 11</span><span class="q-type-tag qt-grammar">Multiple Choice</span></div>
+    <div class="q-body">
+      <div class="q-text">_______ the laboratory was well-equipped, the team struggled to replicate the results.</div>
+      <div class="mc-options" id="g11">
+        <div class="mc-option" onclick="selectMC('g11',this,'A')"><div class="mc-letter">A</div>Despite</div>
+        <div class="mc-option" onclick="selectMC('g11',this,'B')"><div class="mc-letter">B</div>However</div>
+        <div class="mc-option" onclick="selectMC('g11',this,'C')"><div class="mc-letter">C</div>Although</div>
+        <div class="mc-option" onclick="selectMC('g11',this,'D')"><div class="mc-letter">D</div>Therefore</div>
+      </div>
+      <div class="btn-row"><button class="btn-check" onclick="checkMC('g11','C','g11fb','grammar')">Check Answer</button></div>
+      <div class="q-feedback" id="g11fb"></div>
+    </div>
+  </div>
+
+  <!-- Q12 -->
+  <div class="q-block">
+    <div class="q-block-header"><span class="q-num">Question 12</span><span class="q-type-tag qt-grammar">Multiple Choice</span></div>
+    <div class="q-body">
+      <div class="q-text">Identify the error in the following sentence: <br><em>"My colleague and me presented the findings to the board last week."</em></div>
+      <div class="mc-options" id="g12">
+        <div class="mc-option" onclick="selectMC('g12',this,'A')"><div class="mc-letter">A</div>"colleague and me" should be "colleague and I"</div>
+        <div class="mc-option" onclick="selectMC('g12',this,'B')"><div class="mc-letter">B</div>"presented" should be "have presented"</div>
+        <div class="mc-option" onclick="selectMC('g12',this,'C')"><div class="mc-letter">C</div>"findings" should be "finding"</div>
+        <div class="mc-option" onclick="selectMC('g12',this,'D')"><div class="mc-letter">D</div>There is no error</div>
+      </div>
+      <div class="btn-row"><button class="btn-check" onclick="checkMC('g12','A','g12fb','grammar')">Check Answer</button></div>
+      <div class="q-feedback" id="g12fb"></div>
+    </div>
+  </div>
+
+  <div class="section-score-bar" id="grammar-score-bar">
+    <div class="score-row">
+      <div class="score-title">Grammar Score</div>
+      <div class="score-val" id="grammar-score-val">0 / 12</div>
+    </div>
+    <div class="score-track"><div class="score-fill" id="grammar-score-fill" style="width:0%"></div></div>
+    <div class="score-note" id="grammar-score-note"></div>
+  </div>
+
+  <button class="btn-next-section" onclick="completeSection('grammar','writing')">Continue to Writing →</button>
+</div>
+
+<!-- ==================== WRITING ==================== -->
+<div class="section-panel" id="panel-writing">
+  <div class="section-header">
+    <div class="section-header-top sh-writing">
+      <div>
+        <div class="section-num">Section 2 of 3</div>
+        <h2>Writing</h2>
+      </div>
+      <div class="section-score-badge">2 Tasks</div>
+    </div>
+    <div class="section-instructions">
+      <p><strong>Task 1:</strong> Write a short note or message (50–75 words). You will be assessed on <strong>task completion, grammar, vocabulary, and coherence.</strong></p>
+      <p><strong>Task 2:</strong> Write a short paragraph response (80–120 words) giving your opinion on a topic.</p>
+    </div>
+  </div>
+
+  <!-- Writing Task 1 -->
+  <div class="q-block">
+    <div class="q-block-header"><span class="q-num">Writing Task 1 — Short Note</span><span class="q-type-tag qt-writing">50–75 words</span></div>
+    <div class="q-body">
+      <div class="q-passage">You are a chemical engineer working in an R&D department. Your manager has asked you to reschedule a meeting that was planned for Monday morning. Write a short message to your team explaining: (1) the meeting is postponed, (2) the new day and time, and (3) what they need to prepare.</div>
+      <div class="q-text">Write your note below. Aim for <strong>50–75 words.</strong></div>
+      <textarea class="exam-textarea" id="w1" placeholder="Write your note here…" rows="6" style="min-height:130px" oninput="countWords('w1','w1count')"></textarea>
+      <div style="font-size:12px;font-family:Arial,sans-serif;color:var(--ink-muted);margin-top:5px;">Word count: <span id="w1count">0</span> / 75</div>
+      <div class="q-feedback fb-neutral" id="w1fb" style="display:block;margin-top:10px">
+        <strong>What your teacher will assess:</strong> Did you include all 3 points? Is your grammar accurate? Did you use appropriate formal vocabulary? Is the note coherent and well-structured?
+      </div>
+    </div>
+  </div>
+
+  <!-- Writing Task 2 -->
+  <div class="q-block">
+    <div class="q-block-header"><span class="q-num">Writing Task 2 — Opinion Paragraph</span><span class="q-type-tag qt-writing">80–120 words</span></div>
+    <div class="q-body">
+      <div class="q-passage">Some people believe that working from home is more productive than working in an office. Others disagree. What is your opinion? Use specific reasons and examples to support your view.</div>
+      <div class="q-text">Write your response below. Aim for <strong>80–120 words.</strong> Use connectors to link your ideas.</div>
+      <textarea class="exam-textarea" id="w2" placeholder="In my opinion…" rows="7" style="min-height:160px" oninput="countWords('w2','w2count')"></textarea>
+      <div style="font-size:12px;font-family:Arial,sans-serif;color:var(--ink-muted);margin-top:5px;">Word count: <span id="w2count">0</span> / 120</div>
+      <table class="rubric-table" style="margin-top:12px">
+        <tr><th>Criterion</th><th>What the examiner looks for</th></tr>
+        <tr><td>Task response</td><td>Did you give a clear opinion with reasons?</td></tr>
+        <tr><td>Coherence</td><td>Are your ideas connected? Did you use connectors (however, although, therefore)?</td></tr>
+        <tr><td>Vocabulary</td><td>Did you use a range of vocabulary correctly?</td></tr>
+        <tr><td>Grammar</td><td>Are your sentences accurate? Did you use a range of tenses and structures?</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <button class="btn-next-section" onclick="completeSection('writing','speaking')">Continue to Speaking →</button>
+</div>
+
+<!-- ==================== SPEAKING ==================== -->
+<div class="section-panel" id="panel-speaking">
+  <div class="section-header">
+    <div class="section-header-top sh-speaking">
+      <div>
+        <div class="section-num">Section 3 of 3</div>
+        <h2>Speaking</h2>
+      </div>
+      <div class="section-score-badge">3 Prompts</div>
+    </div>
+    <div class="section-instructions">
+      <p><strong>Instructions:</strong> Read each prompt carefully. You have <strong>15 seconds to prepare</strong> and then speak for <strong>45–60 seconds.</strong></p>
+      <p>Speak clearly and directly. Use connectors to organise your answer. It is normal to pause — do not rush.</p>
+      <p><strong>In-lesson:</strong> Speak your answer aloud. Use the notes box to write key words before you speak — not full sentences.</p>
+    </div>
+  </div>
+
+  <!-- Speaking 1 -->
+  <div class="q-block">
+    <div class="q-block-header"><span class="q-num">Speaking Prompt 1</span><span class="q-type-tag qt-speaking">Opinion</span></div>
+    <div class="q-body">
+      <div class="speaking-prompt-box">
+        <div class="sp-label">Your prompt</div>
+        <div class="sp-text">Some people think that university education is essential for a successful career. Others believe that practical experience is more valuable. Which view do you agree with, and why?</div>
+      </div>
+      <div class="speaking-prep">Preparation: Write 3–5 key words below before you speak. Do NOT write full sentences.</div>
+      <input class="exam-input" id="sp1notes" placeholder="Key words only — e.g. both useful · engineering needs degree · experience practical…">
+      <div class="q-feedback fb-neutral" id="sp1fb" style="display:block;margin-top:10px">
+        <strong>Remember:</strong> Give your opinion clearly → give 2 reasons → give an example from your own life → conclude. Use: "In my opinion… because… For example, in my own experience… However… Overall, I believe…"
+      </div>
+    </div>
+  </div>
+
+  <!-- Speaking 2 -->
+  <div class="q-block">
+    <div class="q-block-header"><span class="q-num">Speaking Prompt 2</span><span class="q-type-tag qt-speaking">Description</span></div>
+    <div class="q-body">
+      <div class="speaking-prompt-box">
+        <div class="sp-label">Your prompt</div>
+        <div class="sp-text">Describe a challenge you have faced in your professional or personal life and explain how you overcame it. What did you learn from this experience?</div>
+      </div>
+      <div class="speaking-prep">Preparation: Write 3–5 key words before you speak.</div>
+      <input class="exam-input" id="sp2notes" placeholder="Key words only — e.g. new job · adapting · different team · solved by…">
+      <div class="q-feedback fb-neutral" id="sp2fb" style="display:block;margin-top:10px">
+        <strong>Structure:</strong> Describe the challenge → what you did → what happened → what you learned. Use: "One challenge I have faced was… At first… However, I decided to… As a result… This taught me that…"
+      </div>
+    </div>
+  </div>
+
+  <!-- Speaking 3 -->
+  <div class="q-block">
+    <div class="q-block-header"><span class="q-num">Speaking Prompt 3</span><span class="q-type-tag qt-speaking">Opinion + Example</span></div>
+    <div class="q-body">
+      <div class="speaking-prompt-box">
+        <div class="sp-label">Your prompt</div>
+        <div class="sp-text">Technology has changed the way people work in science and engineering. Do you think these changes have been mostly positive or mostly negative? Use specific examples to support your answer.</div>
+      </div>
+      <div class="speaking-prep">Preparation: Write 3–5 key words before you speak.</div>
+      <input class="exam-input" id="sp3notes" placeholder="Key words only — e.g. ChatGPT · efficiency · fewer errors · but less creativity…">
+      <div class="q-feedback fb-neutral" id="sp3fb" style="display:block;margin-top:10px">
+        <strong>Tip for this question:</strong> You can use your own experience in R&D as your example. "In my own work as a chemical engineer, technology has… For instance…"
+      </div>
+    </div>
+  </div>
+
+  <button class="btn-next-section" onclick="completeSection('speaking','results')">View Results →</button>
+</div>
+
+<!-- ==================== RESULTS ==================== -->
+<div class="section-panel" id="panel-results">
+  <div class="results-header">
+    <h2>Practice Test Complete</h2>
+    <p>Here is a summary of your performance in this session.</p>
+  </div>
+  <div class="results-grid">
+    <div class="result-card">
+      <div class="rc-section">Grammar</div>
+      <div class="rc-score" id="res-grammar">—</div>
+      <div class="rc-label">out of 12</div>
+    </div>
+    <div class="result-card">
+      <div class="rc-section">Writing</div>
+      <div class="rc-score">★</div>
+      <div class="rc-label">Teacher review</div>
+    </div>
+    <div class="result-card">
+      <div class="rc-section">Speaking</div>
+      <div class="rc-score">★</div>
+      <div class="rc-label">Teacher review</div>
+    </div>
+  </div>
+  <div class="feedback-summary">
+    <h3>Section Notes</h3>
+    <div class="feedback-item" id="res-grammar-note"><strong>Grammar:</strong> Complete the grammar section to see your score.</div>
+    <div class="feedback-item"><strong>Writing:</strong> Your teacher will review both writing tasks and give feedback on grammar accuracy, vocabulary range, and structure in your next lesson.</div>
+    <div class="feedback-item"><strong>Speaking:</strong> Your teacher observed your answers in the lesson. Focus areas: fluency, pausing naturally, using connectors, and accessing vocabulary without translating first.</div>
+    <div class="feedback-item"><strong>Overall:</strong> Well done for completing a full mock test. Remember — the iTEP rewards clear organisation and confident delivery more than perfection. Keep practising!</div>
+  </div>
+</div>
+
+</div><!-- end main -->
+
+<script>
+const scores = { grammar: 0 };
+const grammarTotal = 12;
+let grammarAnswered = 0;
+
+function selectMC(groupId, el, letter) {
+  document.querySelectorAll('#' + groupId + ' .mc-option').forEach(o => {
+    o.classList.remove('selected');
+  });
+  el.classList.add('selected');
+  el.dataset.selected = letter;
+}
+
+function checkMC(groupId, correct, fbId, section) {
+  const opts = document.querySelectorAll('#' + groupId + ' .mc-option');
+  let selected = null;
+  opts.forEach(o => { if (o.classList.contains('selected')) selected = o; });
+  if (!selected) { 
+    document.getElementById(fbId).style.display = 'block';
+    document.getElementById(fbId).className = 'q-feedback fb-neutral';
+    document.getElementById(fbId).textContent = 'Please select an answer first.';
+    return; 
+  }
+  const isCorrect = selected.dataset.selected === correct;
+  opts.forEach(o => {
+    o.style.pointerEvents = 'none';
+    if (o.dataset.selected === correct) o.classList.add('show-correct');
+  });
+  if (!isCorrect) selected.classList.add('wrong');
+  else selected.classList.add('correct');
+  const fb = document.getElementById(fbId);
+  fb.style.display = 'block';
+
+  const explanations = {
+    'g1': { correct: 'B — "has been working" (present perfect continuous) is correct because the action started in January and continues now. We use it with "since".', wrong: 'Not quite. The key word here is "since January" — this tells us the action started in the past and continues now, so we need present perfect.' },
+    'g2': { correct: 'C — "had already finished" (past perfect) is correct. The team finished BEFORE the manager arrived — two past events, the earlier one uses past perfect.', wrong: 'Not quite. There are two past events here: finishing (earlier) and arriving (later). The earlier event needs past perfect: had + past participle.' },
+    'g3': { correct: 'C — "met" (simple past) is correct because "yesterday" is a specific time in the past. When you say a specific time, always use simple past, not present perfect.', wrong: 'Not quite. "Yesterday" is a specific past time — always use simple past with specific time references.' },
+    'g4': { correct: 'B — "will be presented" (passive future) is correct. The results are being presented by someone — the subject receives the action.', wrong: 'Not quite. The results don\'t present themselves — they are presented by people. Use passive voice: will be + past participle.' },
+    'g5': { correct: 'B — "Have" is correct for present perfect question: Have + subject + past participle.', wrong: 'Not quite. "Ever" is a key word for present perfect. The question form is: Have + subject + past participle?' },
+    'g6': { correct: 'B — "was" is correct. With "neither…nor", the verb agrees with the noun closest to it — "equipment" is singular, so use "was".', wrong: 'Not quite. With neither…nor, the verb agrees with the noun CLOSEST to it. "Equipment" is singular → was.' },
+    'g7': { correct: 'C — "were adjusted" is correct. This is a second conditional (if + past/were, would + infinitive) in passive form.', wrong: 'Not quite. This is a second conditional: If + past passive (were adjusted), would + infinitive.' },
+    'g8': { correct: 'B — "repeating" is correct. After "suggest", we always use the -ing form (gerund), not the infinitive.', wrong: 'Not quite. After "suggest", we use the -ing form: suggest + doing.' },
+    'g9': { correct: 'C — "who" is correct. We use "who" for people as the subject of a relative clause.', wrong: 'Not quite. We use "who" for people when they are the subject of the clause.' },
+    'g10': { correct: 'A — "on Friday morning" (day = on) and "at the latest" (fixed phrase). Always "on" for days.', wrong: 'Not quite. Days of the week always use "on". "At the latest" is a fixed phrase.' },
+    'g11': { correct: 'C — "Although" is correct. It introduces a contrast within a single sentence: Although + clause, main clause.', wrong: 'Not quite. "Although" introduces contrast in a single sentence structure. "Despite" is followed by a noun phrase, not a full clause.' },
+    'g12': { correct: 'A — "my colleague and I" is correct. When the subject of the verb, use "I" not "me". Test: remove "my colleague and" — "me presented" is wrong; "I presented" is correct.', wrong: 'Not quite. The error is the pronoun. Remove "my colleague and" and test: "me presented" (wrong) or "I presented" (right)?' }
+  };
+
+  const qKey = groupId;
+  if (isCorrect) {
+    fb.className = 'q-feedback fb-correct';
+    fb.innerHTML = '✓ Correct! ' + (explanations[qKey] ? explanations[qKey].correct : '');
+    if (section === 'grammar') {
+      scores.grammar++;
+      grammarAnswered++;
+      updateGrammarBadge();
+    }
+  } else {
+    fb.className = 'q-feedback fb-wrong';
+    fb.innerHTML = '✗ ' + (explanations[qKey] ? explanations[qKey].wrong : 'Incorrect. The correct answer is ' + correct + '.');
+    if (section === 'grammar') {
+      grammarAnswered++;
+      updateGrammarBadge();
+    }
+  }
+  document.querySelectorAll('#' + groupId + ' .btn-check').forEach(b => b.disabled = true);
+}
+
+function updateGrammarBadge() {
+  document.getElementById('grammar-score-badge').textContent = scores.grammar + ' / ' + grammarTotal;
+}
+
+function completeSection(from, to) {
+  if (from === 'grammar') {
+    const bar = document.getElementById('grammar-score-bar');
+    bar.style.display = 'block';
+    const pct = Math.round((scores.grammar / grammarTotal) * 100);
+    document.getElementById('grammar-score-val').textContent = scores.grammar + ' / ' + grammarTotal + ' (' + pct + '%)';
+    document.getElementById('grammar-score-fill').style.width = pct + '%';
+    let note = '';
+    if (pct >= 80) note = 'Excellent — strong grammar performance for B2 level.';
+    else if (pct >= 60) note = 'Good — a few areas to review. Check the feedback on each question.';
+    else note = 'Keep practising — review the explanations above and try again.';
+    document.getElementById('grammar-score-note').textContent = note;
+    document.getElementById('res-grammar').textContent = scores.grammar + '/' + grammarTotal;
+    document.getElementById('res-grammar-note').innerHTML = '<strong>Grammar:</strong> ' + scores.grammar + ' out of ' + grammarTotal + ' (' + pct + '%). ' + note;
+    document.getElementById('nav-grammar').classList.add('completed');
+  }
+  if (from === 'writing') document.getElementById('nav-writing').classList.add('completed');
+  if (from === 'speaking') document.getElementById('nav-speaking').classList.add('completed');
+  goSection(to);
+}
+
+function goSection(name) {
+  document.querySelectorAll('.section-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('panel-' + name).classList.add('active');
+  document.getElementById('nav-' + name).classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function countWords(inputId, countId) {
+  const text = document.getElementById(inputId).value.trim();
+  const count = text === '' ? 0 : text.split(/\s+/).length;
+  document.getElementById(countId).textContent = count;
+}
+</script>
+</body>
+</html>
