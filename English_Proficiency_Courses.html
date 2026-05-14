@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>English Proficiency Exam Comparison for Seda</title>
+  <style>
+    :root{
+      --cream:#fbf6eb;
+      --soft-cream:#fffaf1;
+      --navy:#1f3349;
+      --sage:#8fae9b;
+      --sage-dark:#5f7f6d;
+      --gold:#c79b42;
+      --muted:#6b7280;
+      --card:#ffffff;
+      --line:#eadfca;
+      --success:#e8f3ec;
+      --warning:#fff3d8;
+      --danger:#f9e5df;
+      --shadow:0 12px 30px rgba(31,51,73,.10);
+      --radius:22px;
+    }
+
+    *{box-sizing:border-box;}
+
+    body{
+      margin:0;
+      font-family: "Segoe UI", Arial, sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(199,155,66,.20), transparent 28%),
+        radial-gradient(circle at top right, rgba(143,174,155,.25), transparent 24%),
+        var(--cream);
+      color:var(--navy);
+      line-height:1.65;
+    }
+
+    .page{
+      width:min(1120px, 94%);
+      margin:0 auto;
+      padding:36px 0 70px;
+    }
+
+    .hero{
+      background:linear-gradient(135deg, var(--navy), #314d68);
+      color:white;
+      border-radius:30px;
+      padding:44px;
+      box-shadow:var(--shadow);
+      position:relative;
+      overflow:hidden;
+    }
+
+    .hero:before{
+      content:"";
+      position:absolute;
+      width:280px;
+      height:280px;
+      border-radius:50%;
+      background:rgba(199,155,66,.22);
+      top:-90px;
+      right:-70px;
+    }
+
+    .hero:after{
+      content:"";
+      position:absolute;
+      width:170px;
+      height:170px;
+      border-radius:50%;
+      background:rgba(143,174,155,.28);
+      bottom:-60px;
+      left:40px;
+    }
+
+    .hero-content{
+      position:relative;
+      z-index:1;
+    }
+
+    .eyebrow{
+      display:inline-block;
+      background:rgba(255,255,255,.14);
+      border:1px solid rgba(255,255,255,.22);
+      color:#fff8e7;
+      padding:7px 14px;
+      border-radius:999px;
+      font-size:.88rem;
+      letter-spacing:.04em;
+      text-transform:uppercase;
+      font-weight:700;
+      margin-bottom:18px;
+    }
+
+    h1{
+      font-size:clamp(2rem, 4vw, 3.6rem);
+      line-height:1.1;
+      margin:0 0 16px;
+    }
+
+    .hero p{
+      max-width:800px;
+      font-size:1.08rem;
+      margin:0;
+      color:#f7f1e6;
+    }
+
+    .section{
+      margin-top:28px;
+      background:rgba(255,255,255,.72);
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      padding:28px;
+      box-shadow:0 8px 22px rgba(31,51,73,.06);
+    }
+
+    .section h2{
+      margin:0 0 12px;
+      font-size:1.65rem;
+      color:var(--navy);
+    }
+
+    .intro-grid{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:16px;
+      margin-top:20px;
+    }
+
+    .mini-card{
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:18px;
+      padding:18px;
+      box-shadow:0 8px 18px rgba(31,51,73,.06);
+    }
+
+    .mini-card .rank{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      width:34px;
+      height:34px;
+      border-radius:50%;
+      background:var(--gold);
+      color:white;
+      font-weight:800;
+      margin-bottom:10px;
+    }
+
+    .mini-card h3{
+      margin:0 0 6px;
+      font-size:1.02rem;
+    }
+
+    .mini-card p{
+      margin:0;
+      color:var(--muted);
+      font-size:.94rem;
+    }
+
+    .recommendation{
+      display:grid;
+      grid-template-columns:1.2fr .8fr;
+      gap:20px;
+      align-items:stretch;
+      margin-top:24px;
+    }
+
+    .big-rec{
+      background:linear-gradient(135deg, var(--success), #ffffff);
+      border:1px solid #cde0d3;
+      border-radius:var(--radius);
+      padding:28px;
+    }
+
+    .big-rec h2{
+      color:var(--sage-dark);
+    }
+
+    .score-card{
+      background:var(--navy);
+      color:white;
+      border-radius:var(--radius);
+      padding:28px;
+      box-shadow:var(--shadow);
+    }
+
+    .score-card h3{
+      margin:0 0 14px;
+      color:#ffe9b3;
+    }
+
+    .score-row{
+      display:flex;
+      justify-content:space-between;
+      border-bottom:1px solid rgba(255,255,255,.16);
+      padding:10px 0;
+      gap:15px;
+    }
+
+    .score-row:last-child{
+      border-bottom:none;
+    }
+
+    .badge{
+      display:inline-block;
+      padding:5px 10px;
+      border-radius:999px;
+      background:var(--soft-cream);
+      border:1px solid var(--line);
+      color:var(--navy);
+      font-size:.86rem;
+      font-weight:700;
+      margin:4px 4px 4px 0;
+    }
+
+    table{
+      width:100%;
+      border-collapse:separate;
+      border-spacing:0;
+      overflow:hidden;
+      border-radius:18px;
+      border:1px solid var(--line);
+      background:white;
+      margin-top:18px;
+    }
+
+    th,td{
+      padding:14px 16px;
+      text-align:left;
+      border-bottom:1px solid var(--line);
+      vertical-align:top;
+    }
+
+    th{
+      background:var(--navy);
+      color:white;
+      font-size:.92rem;
+    }
+
+    tr:last-child td{
+      border-bottom:none;
+    }
+
+    td strong{
+      color:var(--navy);
+    }
+
+    .accordion{
+      margin-top:24px;
+      display:grid;
+      gap:14px;
+    }
+
+    .acc-item{
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:20px;
+      overflow:hidden;
+      box-shadow:0 8px 18px rgba(31,51,73,.05);
+    }
+
+    .acc-btn{
+      width:100%;
+      border:0;
+      background:white;
+      padding:20px 22px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:18px;
+      cursor:pointer;
+      color:var(--navy);
+      text-align:left;
+      font-size:1rem;
+    }
+
+    .acc-btn:hover{
+      background:var(--soft-cream);
+    }
+
+    .acc-title{
+      display:flex;
+      flex-direction:column;
+      gap:4px;
+    }
+
+    .acc-title strong{
+      font-size:1.16rem;
+    }
+
+    .acc-title span{
+      color:var(--muted);
+      font-size:.94rem;
+    }
+
+    .icon{
+      width:34px;
+      height:34px;
+      border-radius:50%;
+      background:var(--cream);
+      border:1px solid var(--line);
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      flex:0 0 auto;
+      font-weight:900;
+      color:var(--gold);
+      transition:.2s ease;
+    }
+
+    .acc-item.active .icon{
+      transform:rotate(45deg);
+      background:var(--gold);
+      color:white;
+    }
+
+    .acc-content{
+      max-height:0;
+      overflow:hidden;
+      transition:max-height .28s ease;
+      background:linear-gradient(180deg, #fff, var(--soft-cream));
+    }
+
+    .acc-inner{
+      padding:0 22px 24px;
+    }
+
+    .two-col{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:18px;
+      margin-top:16px;
+    }
+
+    .box{
+      border-radius:18px;
+      padding:18px;
+      border:1px solid var(--line);
+      background:white;
+    }
+
+    .box h4{
+      margin:0 0 8px;
+      font-size:1.05rem;
+    }
+
+    .pros{background:#f0f8f3;}
+    .cons{background:#fff5ed;}
+    .best{background:#f8f1dc;}
+    .teacher{background:#f1f5f9;}
+
+    ul{
+      margin:8px 0 0 20px;
+      padding:0;
+    }
+
+    li{
+      margin:6px 0;
+    }
+
+    .pathway{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:16px;
+      margin-top:18px;
+    }
+
+    .step{
+      background:white;
+      border:1px solid var(--line);
+      border-radius:18px;
+      padding:18px;
+      position:relative;
+    }
+
+    .step-num{
+      width:32px;
+      height:32px;
+      border-radius:50%;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      background:var(--sage);
+      color:white;
+      font-weight:800;
+      margin-bottom:10px;
+    }
+
+    .footer-note{
+      text-align:center;
+      margin-top:28px;
+      padding:24px;
+      color:var(--muted);
+      font-size:.96rem;
+    }
+
+    .print-btn{
+      border:0;
+      background:var(--gold);
+      color:white;
+      padding:12px 18px;
+      border-radius:999px;
+      font-weight:800;
+      cursor:pointer;
+      box-shadow:0 8px 16px rgba(199,155,66,.22);
+      margin-top:18px;
+    }
+
+    .print-btn:hover{
+      filter:brightness(.96);
+    }
+
+    @media(max-width:900px){
+      .intro-grid,.recommendation,.two-col,.pathway{
+        grid-template-columns:1fr;
+      }
+      .hero{
+        padding:32px 24px;
+      }
+      .section{
+        padding:22px;
+      }
+      table{
+        display:block;
+        overflow-x:auto;
+      }
+    }
+
+    @media print{
+      body{background:white;}
+      .page{width:100%; padding:0;}
+      .hero,.section,.acc-item,.score-card{box-shadow:none;}
+      .print-btn{display:none;}
+      .acc-content{max-height:none !important;}
+      .acc-item{break-inside:avoid;}
+    }
+  </style>
+</head>
+
+<body>
+  <main class="page">
+    <section class="hero">
+      <div class="hero-content">
+        <span class="eyebrow">English Proficiency Exam Decision Guide</span>
+        <h1>Choosing the Best English Exam for Seda</h1>
+        <p>
+          A supportive comparison of TOEFL iBT, IELTS Academic, Oxford Test of English, and Cambridge C2 Proficiency
+          for a B2-level Chemical Engineer who wants a strong certificate for salary growth, international opportunities,
+          academic development, and long-term career confidence.
+        </p>
+        <button class="print-btn" onclick="window.print()">Print / Save as PDF</button>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Seda’s Profile</h2>
+      <p>
+        Seda is a B2-level English learner and Chemical Engineer. She has strong listening, reading, writing, and grammar skills.
+        Her speaking is also strong, but she personally feels less confident in speaking and sometimes makes small tense and verb mistakes.
+        She does not panic in live speaking situations, but she dislikes taking exams.
+      </p>
+
+      <div>
+        <span class="badge">Current level: B2</span>
+        <span class="badge">Strong analytical skills</span>
+        <span class="badge">Good communicator</span>
+        <span class="badge">Future Master’s potential</span>
+        <span class="badge">International career goals</span>
+        <span class="badge">Needs high prestige</span>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Overall Recommendation</h2>
+      <div class="recommendation">
+        <div class="big-rec">
+          <h2>Best Overall Fit: IELTS Academic</h2>
+          <p>
+            IELTS Academic is the strongest overall choice for Seda because it offers excellent international recognition,
+            academic value, immigration value, and professional credibility without being unnecessarily stressful.
+          </p>
+          <p>
+            Since Seda communicates well and does not panic in live speaking situations, IELTS gives her a chance to show her real ability
+            in a more natural way than a fully microphone-based exam.
+          </p>
+        </div>
+
+        <div class="score-card">
+          <h3>Recommended Ranking</h3>
+          <div class="score-row"><span>1. IELTS Academic</span><strong>Best fit</strong></div>
+          <div class="score-row"><span>2. TOEFL iBT</span><strong>Strong technical option</strong></div>
+          <div class="score-row"><span>3. Cambridge C2</span><strong>Elite but difficult</strong></div>
+          <div class="score-row"><span>4. Oxford Test</span><strong>Easy but less prestigious</strong></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Quick Comparison Table</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Exam</th>
+            <th>Prestige</th>
+            <th>Difficulty</th>
+            <th>Best For</th>
+            <th>Seda Match</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>IELTS Academic</strong></td>
+            <td>Very high</td>
+            <td>Moderate to high</td>
+            <td>Global work, Master’s, immigration, HR recognition</td>
+            <td>Excellent</td>
+          </tr>
+          <tr>
+            <td><strong>TOEFL iBT</strong></td>
+            <td>Very high</td>
+            <td>High</td>
+            <td>Academic and technical environments</td>
+            <td>Very good</td>
+          </tr>
+          <tr>
+            <td><strong>Oxford Test of English</strong></td>
+            <td>Moderate</td>
+            <td>Moderate</td>
+            <td>Workplace English and quick certification</td>
+            <td>Good, but limited prestige</td>
+          </tr>
+          <tr>
+            <td><strong>Cambridge C2 Proficiency</strong></td>
+            <td>Elite</td>
+            <td>Very high</td>
+            <td>Advanced mastery and long-term prestige</td>
+            <td>Possible later, not ideal now</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="section">
+      <h2>Detailed Exam Breakdown</h2>
+      <p>Open each section to compare the purpose, strengths, risks, and suitability for Seda.</p>
+
+      <div class="accordion">
+
+        <div class="acc-item active">
+          <button class="acc-btn">
+            <span class="acc-title">
+              <strong>1. IELTS Academic</strong>
+              <span>The best balance of prestige, flexibility, and realistic success.</span>
+            </span>
+            <span class="icon">+</span>
+          </button>
+          <div class="acc-content">
+            <div class="acc-inner">
+              <p>
+                IELTS Academic is probably the smartest overall choice for Seda. It is widely recognized internationally and is useful for
+                career advancement, Master’s applications, immigration possibilities, and professional credibility.
+              </p>
+
+              <div class="two-col">
+                <div class="box pros">
+                  <h4>Pros</h4>
+                  <ul>
+                    <li>Very strong global recognition.</li>
+                    <li>Useful for academic, professional, and immigration goals.</li>
+                    <li>Speaking is with a real person, which may feel more natural.</li>
+                    <li>Good fit for confident communicators.</li>
+                    <li>Small grammar mistakes do not automatically destroy the score if communication is strong.</li>
+                  </ul>
+                </div>
+
+                <div class="box cons">
+                  <h4>Cons</h4>
+                  <ul>
+                    <li>Reading can be time pressured.</li>
+                    <li>Writing needs clear structure and strong task control.</li>
+                    <li>Speaking requires confidence, fluency, and topic flexibility.</li>
+                    <li>Band 8+ requires accuracy and precision.</li>
+                  </ul>
+                </div>
+              </div>
+
+              <div class="box best">
+                <h4>Why it fits Seda</h4>
+                <p>
+                  Seda already has strong comprehension and professional maturity. IELTS allows her to show both her academic ability
+                  and her natural communication skills. It is prestigious enough for career growth but not as psychologically harsh as TOEFL
+                  or Cambridge C2.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="acc-item">
+          <button class="acc-btn">
+            <span class="acc-title">
+              <strong>2. TOEFL iBT</strong>
+              <span>A strong academic and technical exam, especially for engineering profiles.</span>
+            </span>
+            <span class="icon">+</span>
+          </button>
+          <div class="acc-content">
+            <div class="acc-inner">
+              <p>
+                TOEFL iBT is excellent for technical, academic, and research-focused professionals. It suits analytical learners because the exam
+                is structured, logic-based, and strongly academic.
+              </p>
+
+              <div class="two-col">
+                <div class="box pros">
+                  <h4>Pros</h4>
+                  <ul>
+                    <li>Very strong international prestige.</li>
+                    <li>Excellent for engineering, research, and academic environments.</li>
+                    <li>Good fit for analytical and logical thinkers.</li>
+                    <li>Reading and listening strengths are highly valuable here.</li>
+                    <li>Useful for international Master’s applications.</li>
+                  </ul>
+                </div>
+
+                <div class="box cons">
+                  <h4>Cons</h4>
+                  <ul>
+                    <li>Speaking into a microphone can feel unnatural.</li>
+                    <li>The timing can feel intense and exhausting.</li>
+                    <li>Requires strong note-taking skills.</li>
+                    <li>May feel more stressful for someone who dislikes exams.</li>
+                  </ul>
+                </div>
+              </div>
+
+              <div class="box best">
+                <h4>Why it may fit Seda</h4>
+                <p>
+                  Seda’s engineering background, strong listening, and strong reading skills are very helpful for TOEFL.
+                  However, because she dislikes exams, TOEFL may feel more mentally tiring than IELTS.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="acc-item">
+          <button class="acc-btn">
+            <span class="acc-title">
+              <strong>3. Oxford Test of English</strong>
+              <span>A practical, lower-stress option for workplace English.</span>
+            </span>
+            <span class="icon">+</span>
+          </button>
+          <div class="acc-content">
+            <div class="acc-inner">
+              <p>
+                The Oxford Test of English is a modern, computer-based exam that can be a good option for workplace English and practical
+                certification. It is usually less intimidating than IELTS, TOEFL, or Cambridge.
+              </p>
+
+              <div class="two-col">
+                <div class="box pros">
+                  <h4>Pros</h4>
+                  <ul>
+                    <li>Usually less stressful.</li>
+                    <li>Good for practical workplace communication.</li>
+                    <li>Modern and efficient exam format.</li>
+                    <li>Can be suitable if the company only needs proof of English level.</li>
+                  </ul>
+                </div>
+
+                <div class="box cons">
+                  <h4>Cons</h4>
+                  <ul>
+                    <li>Less internationally famous than IELTS, TOEFL, or Cambridge.</li>
+                    <li>May not carry the same weight for Master’s applications.</li>
+                    <li>May not be the strongest choice for long-term international goals.</li>
+                    <li>Recognition depends heavily on the company or institution.</li>
+                  </ul>
+                </div>
+              </div>
+
+              <div class="box best">
+                <h4>Why it may not be best for Seda</h4>
+                <p>
+                  It could be useful if Seda only needed a fast company certificate. But because she wants prestige, academic value,
+                  international value, and future flexibility, IELTS or TOEFL would be stronger choices.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="acc-item">
+          <button class="acc-btn">
+            <span class="acc-title">
+              <strong>4. Cambridge C2 Proficiency</strong>
+              <span>The most prestigious but also the most demanding option.</span>
+            </span>
+            <span class="icon">+</span>
+          </button>
+          <div class="acc-content">
+            <div class="acc-inner">
+              <p>
+                Cambridge C2 Proficiency is an elite English qualification. It shows extremely advanced English ability, but it is not
+                simply a normal proficiency exam. It requires near-native control of grammar, vocabulary, style, idioms, and written precision.
+              </p>
+
+              <div class="two-col">
+                <div class="box pros">
+                  <h4>Pros</h4>
+                  <ul>
+                    <li>Extremely prestigious.</li>
+                    <li>Excellent long-term certificate.</li>
+                    <li>Powerful for high-level professional credibility.</li>
+                    <li>Shows advanced mastery of English.</li>
+                  </ul>
+                </div>
+
+                <div class="box cons">
+                  <h4>Cons</h4>
+                  <ul>
+                    <li>Very difficult, even for strong English users.</li>
+                    <li>Requires advanced vocabulary and grammar precision.</li>
+                    <li>Not ideal for a quick 1–3 month goal.</li>
+                    <li>Small grammar mistakes can matter more.</li>
+                    <li>Preparation may be stressful for someone who dislikes exams.</li>
+                  </ul>
+                </div>
+              </div>
+
+              <div class="box best">
+                <h4>Why it is better as a future goal</h4>
+                <p>
+                  Cambridge C2 could be a wonderful long-term goal for Seda, but it is probably not the best immediate choice.
+                  IELTS first, Cambridge later would be a much smarter pathway.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Suggested Study Path for Seda</h2>
+      <p>
+        Since Seda has 1–3 months and wants the most prestigious realistic option, she should prepare strategically rather than study “general English.”
+      </p>
+
+      <div class="pathway">
+        <div class="step">
+          <span class="step-num">1</span>
+          <h3>Choose IELTS Academic</h3>
+          <p>Focus on one exam only. Avoid splitting energy between multiple test systems.</p>
+        </div>
+
+        <div class="step">
+          <span class="step-num">2</span>
+          <h3>Target Band 7.5+</h3>
+          <p>This is a strong professional and academic result that can support salary, promotion, and future study goals.</p>
+        </div>
+
+        <div class="step">
+          <span class="step-num">3</span>
+          <h3>Train Weak Points</h3>
+          <p>Focus on speaking fluency, tense accuracy, writing structure, timed reading, and exam confidence.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Teacher’s Note</h2>
+      <div class="box teacher">
+        <p>
+          Seda already has a strong English foundation. Her main challenge is not lack of ability — it is choosing the right exam strategy
+          and learning how to perform calmly under exam conditions. With focused preparation, she can turn her analytical strengths,
+          strong comprehension skills, and professional experience into a very competitive result.
+        </p>
+        <p>
+          The best plan is not to chase the hardest exam immediately. The best plan is to choose the exam that gives her the strongest
+          career value with the most realistic chance of success.
+        </p>
+      </div>
+    </section>
+
+    <div class="footer-note">
+      Created by Teacher Benny • Supportive English Exam Guidance for Professional Learners
+    </div>
+  </main>
+
+  <script>
+    const items = document.querySelectorAll(".acc-item");
+
+    items.forEach(item => {
+      const btn = item.querySelector(".acc-btn");
+      const content = item.querySelector(".acc-content");
+
+      function setHeight() {
+        if (item.classList.contains("active")) {
+          content.style.maxHeight = content.scrollHeight + "px";
+        } else {
+          content.style.maxHeight = null;
+        }
+      }
+
+      btn.addEventListener("click", () => {
+        item.classList.toggle("active");
+        setHeight();
+      });
+
+      setHeight();
+    });
+
+    window.addEventListener("resize", () => {
+      items.forEach(item => {
+        const content = item.querySelector(".acc-content");
+        if (item.classList.contains("active")) {
+          content.style.maxHeight = content.scrollHeight + "px";
+        }
+      });
+    });
+  </script>
+</body>
+</html>
