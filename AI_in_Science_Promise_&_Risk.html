@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Seda · Week 1 Pilot — AI in Science</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#fdf8f4;--surface:#fff;--surface2:#fdf0e8;--border:#e8d5c4;--terra:#c1440e;--warm:#e07b39;--sage:#5f7c5e;--sky:#4a7fa5;--sky-dim:rgba(74,127,165,0.1);--amber:#c4862a;--amber-dim:rgba(196,134,42,0.12);--red:#c0392b;--red-dim:rgba(192,57,43,0.1);--green:#4a7c59;--green-dim:rgba(74,124,89,0.1);--violet:#7c5c9e;--violet-dim:rgba(124,92,158,0.1);--text:#2c1a0e;--muted:#7a5c44;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);line-height:1.7;}
+body::before{content:'';position:fixed;inset:0;background-image:radial-gradient(circle,rgba(193,68,14,0.04) 1px,transparent 1px);background-size:36px 36px;pointer-events:none;z-index:0;}
+.page{max-width:820px;margin:0 auto;padding:36px 18px 100px;position:relative;z-index:1;}
+.hdr{border-radius:18px;padding:22px 24px 26px;margin-bottom:18px;background:linear-gradient(135deg,var(--terra),var(--warm));}
+.hdr h1{font-family:'Playfair Display',serif;font-size:clamp(20px,4.5vw,28px);font-style:italic;color:#fff;margin-bottom:5px;}
+.hdr p{font-size:13px;color:rgba(255,255,255,.88);font-weight:600;margin-bottom:12px;}
+.meta{display:flex;gap:6px;flex-wrap:wrap;}
+.meta span{background:rgba(255,255,255,.18);border:1.5px solid rgba(255,255,255,.3);border-radius:50px;padding:2px 10px;font-size:10px;font-weight:700;color:#fff;}
+.pill{display:inline-block;background:rgba(255,255,255,0.28);border:1.5px solid rgba(255,255,255,0.4);border-radius:50px;padding:3px 13px;font-size:10px;font-weight:800;color:#fff;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:8px;}
+.sec{background:var(--surface);border:2px solid var(--border);border-radius:14px;margin-bottom:12px;overflow:hidden;}
+.sec-top{display:flex;align-items:center;gap:9px;padding:12px 16px;border-bottom:2px dashed var(--border);}
+.s-badge{font-size:10px;font-weight:800;padding:3px 11px;border-radius:50px;color:#fff;background:var(--terra);}
+.sec-top h2{font-size:14px;font-weight:800;flex:1;}
+.pts{font-size:11px;font-weight:800;color:var(--muted);}
+.sec-body{padding:14px 16px 18px;}
+.instr{font-size:12.5px;color:var(--muted);margin-bottom:11px;padding:7px 11px;background:var(--surface2);border-left:3px solid var(--border);border-radius:0 8px 8px 0;}
+.item{background:var(--surface2);border:2px solid var(--border);border-radius:10px;padding:10px 12px;margin-bottom:7px;}
+.item .n{font-size:10px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;}
+.item .txt{font-size:13px;font-weight:700;margin-bottom:7px;}
+.key{display:inline-block;background:var(--amber-dim);color:#8a5a1f;border:1.5px solid rgba(196,134,42,0.35);border-radius:6px;padding:1px 7px;font-weight:800;font-size:11.5px;margin-left:4px;}
+.inp{width:100%;border:2px solid var(--border);border-radius:8px;padding:6px 10px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:600;color:var(--text);outline:none;background:var(--surface);}
+.inp:focus{border-color:var(--terra);}
+.inp.ok{border-color:var(--green);background:var(--green-dim);}
+.inp.no{border-color:var(--red);background:var(--red-dim);}
+.sel{border:2px solid var(--border);border-radius:8px;padding:5px 8px;font-family:'Nunito',sans-serif;font-size:12.5px;font-weight:700;background:var(--surface);max-width:65%;}
+.sel.ok{border-color:var(--green);background:var(--green-dim);}
+.sel.no{border-color:var(--red);background:var(--red-dim);}
+.chk{padding:3px 10px;background:var(--terra);color:#fff;border:none;border-radius:50px;font-family:'Nunito',sans-serif;font-size:10px;font-weight:800;cursor:pointer;margin-top:6px;}
+.chk:hover{background:var(--warm);}
+.hint{display:none;font-size:11px;color:#8a5a1f;background:var(--amber-dim);border-left:3px solid var(--amber);border-radius:0 6px 6px 0;padding:5px 8px;margin-top:6px;font-weight:600;}
+.hint.show{display:block;}
+.row{display:flex;align-items:center;gap:10px;background:var(--surface2);border:2px solid var(--border);border-radius:9px;padding:8px 12px;margin-bottom:6px;}
+.row .txt{flex:1;font-size:12.5px;font-weight:700;margin:0;}
+.reading{background:var(--surface2);border:2px solid var(--border);border-radius:11px;padding:16px 18px;font-size:13.5px;line-height:1.85;margin-bottom:12px;}
+.mcq{background:var(--surface2);border:2px solid var(--border);border-radius:10px;padding:10px 12px;margin-bottom:7px;}
+.mcq .txt{font-size:13px;font-weight:700;margin-bottom:7px;}
+.mcq label{display:block;font-size:12.5px;padding:5px 9px;margin-bottom:4px;border:2px solid var(--border);border-radius:7px;cursor:pointer;background:var(--surface);}
+.mcq label:hover{border-color:var(--warm);}
+.mcq label.picked{border-color:var(--terra);background:var(--terra-dim,rgba(193,68,14,0.08));}
+.mcq label.ok{border-color:var(--green);background:var(--green-dim);}
+.mcq label.no{border-color:var(--red);background:var(--red-dim);}
+.mcq input{margin-right:7px;}
+.para-block{background:var(--surface2);border:2px solid var(--border);border-radius:10px;padding:11px 13px;margin-bottom:8px;}
+.para-block textarea{width:100%;min-height:60px;border:2px solid var(--border);border-radius:9px;padding:8px 11px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:600;color:var(--text);outline:none;background:var(--surface);resize:vertical;margin-top:6px;}
+.para-block textarea:focus{border-color:var(--terra);}
+.ex-btn{padding:3px 12px;background:var(--sage);color:#fff;border:none;border-radius:50px;font-family:'Nunito',sans-serif;font-size:10px;font-weight:800;cursor:pointer;margin-top:7px;}
+.ex-btn:hover{background:#4a6349;}
+.example{display:none;margin-top:7px;background:var(--sage-dim,rgba(95,124,94,0.1));border:1.5px solid rgba(95,124,94,0.3);border-radius:8px;padding:8px 11px;font-size:12.5px;font-weight:600;}
+.example.show{display:block;}
+.selfrate{display:flex;gap:6px;margin-top:7px;}
+.selfrate button{flex:1;padding:5px;border:2px solid var(--border);background:var(--surface);border-radius:7px;font-family:'Nunito',sans-serif;font-size:10.5px;font-weight:700;cursor:pointer;color:var(--muted);}
+.selfrate button.sel{border-color:var(--terra);background:var(--terra-dim,rgba(193,68,14,0.08));color:var(--terra);}
+.disc{font-size:13px;font-weight:600;margin-bottom:6px;padding:10px 12px;background:var(--surface2);border-radius:9px;border:2px solid var(--border);line-height:1.6;}
+.timer-block{background:var(--violet-dim);border:2px solid rgba(124,92,158,0.3);border-radius:11px;padding:14px 16px;margin-bottom:9px;}
+.timer-block .txt{font-size:13.5px;font-weight:700;margin-bottom:9px;color:#4d3866;}
+.timer-row{display:flex;align-items:center;gap:10px;}
+.timer-disp{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--violet);min-width:52px;}
+.timer-btn{padding:6px 14px;background:var(--violet);color:#fff;border:none;border-radius:50px;font-family:'Nunito',sans-serif;font-size:11px;font-weight:800;cursor:pointer;}
+.timer-btn:hover{opacity:0.88;}
+.timer-btn:disabled{opacity:0.5;cursor:not-allowed;}
+.guide{background:var(--surface2);border:2px solid var(--border);border-radius:10px;padding:12px 14px;margin-bottom:11px;font-size:12.5px;}
+.guide ol{margin:6px 0 0 18px;}
+.guide li{margin-bottom:3px;}
+textarea.big{width:100%;min-height:230px;border:2px solid var(--border);border-radius:11px;padding:13px 15px;font-family:'Nunito',sans-serif;font-size:13.5px;color:var(--text);outline:none;background:var(--surface);resize:vertical;line-height:1.7;}
+textarea.big:focus{border-color:var(--terra);}
+.wc{font-size:11px;font-weight:800;color:var(--muted);margin-top:7px;text-transform:uppercase;}
+.wc.done{color:var(--green);}
+.selfedit{background:var(--sky-dim);border:1.5px solid rgba(74,127,165,0.3);border-radius:10px;padding:11px 14px;margin-top:11px;}
+.selfedit h4{font-size:11px;text-transform:uppercase;color:#1f4a63;margin-bottom:7px;}
+.selfedit label{display:flex;gap:7px;font-size:12.5px;padding:3px 0;cursor:pointer;}
+.selfedit input{margin-top:3px;accent-color:var(--sky);}
+.main-btn{width:100%;padding:10px;color:#fff;border:none;border-radius:12px;font-family:'Nunito',sans-serif;font-size:13.5px;font-weight:800;cursor:pointer;margin-top:4px;background:linear-gradient(135deg,var(--terra),var(--warm));}
+.main-btn:hover{opacity:0.92;}
+.score{border-radius:14px;padding:16px 18px;text-align:center;display:none;margin-top:9px;background:linear-gradient(135deg,var(--terra),var(--warm));}
+.score.show{display:block;}
+.sc-n{font-size:32px;font-weight:900;color:#fff;line-height:1;}
+.sc-n span{font-size:14px;}
+.sc-t{font-family:'Playfair Display',serif;font-size:16px;font-style:italic;color:#fff;margin:4px 0 2px;}
+.sc-b{font-size:11.5px;color:rgba(255,255,255,0.88);font-weight:600;}
+.savebar{position:fixed;bottom:18px;right:18px;display:flex;gap:7px;z-index:999;}
+.savebar button{padding:7px 13px;background:var(--terra);color:#fff;border:none;border-radius:50px;font-family:'Nunito',sans-serif;font-size:10px;font-weight:800;cursor:pointer;box-shadow:0 3px 10px rgba(193,68,14,0.3);}
+.savebar button.reset{background:var(--surface);border:2px solid var(--border);color:var(--muted);}
+#toast{position:fixed;bottom:55px;right:18px;background:var(--terra);color:#fff;font-size:10px;font-weight:800;padding:6px 14px;border-radius:50px;opacity:0;transition:all .3s;pointer-events:none;z-index:1000;}
+</style>
+</head>
+<body>
+<div class="page">
+
+<div class="hdr">
+  <div class="pill">4 Weeks to Fluency · Pilot · Week 1 Lesson</div>
+  <h1>AI in Science: Promise &amp; Risk</h1>
+  <p>45 minutes · B2 → C1 · precision, nuance and register</p>
+  <div class="meta"><span>Nuance &amp; register</span><span>Transformation</span><span>Inference reading</span><span>Argumentation</span></div>
+</div>
+
+<!-- 1 REGISTER & NUANCE MATCHING -->
+<div class="sec"><div class="sec-top"><span class="s-badge">1</span><h2>Register &amp; Nuance Matching</h2><span class="pts">10 items</span></div>
+<div class="sec-body"><div class="instr">All these expressions are broadly synonymous, but each fits a different situation. Match each phrase to the context it suits best.</div>
+<div id="matchBody"></div><button class="main-btn" onclick="checkSection('match')">✓ Check Section 1</button><div class="score" id="sc-match"></div></div></div>
+
+<!-- 2 SENTENCE TRANSFORMATION -->
+<div class="sec"><div class="sec-top"><span class="s-badge" style="background:var(--sage);">2</span><h2>Sentence Transformation</h2><span class="pts">8 items</span></div>
+<div class="sec-body"><div class="instr">Rewrite each sentence so it means the same thing, using the key word given. Do not change the key word's form. Punctuation counts.</div>
+<div id="transBody"></div><button class="main-btn" style="background:linear-gradient(135deg,var(--sage),var(--sky));" onclick="checkSection('trans')">✓ Check Section 2</button><div class="score" id="sc-trans"></div></div></div>
+
+<!-- 3 REFINE, DON'T CORRECT -->
+<div class="sec"><div class="sec-top"><span class="s-badge" style="background:var(--sky);">3</span><h2>Refine, Don't Correct</h2><span class="pts">8 items</span></div>
+<div class="sec-body"><div class="instr">These sentences aren't ungrammatical — but a native-level writer would phrase them differently. Rewrite each one more naturally, and be ready to explain why.</div>
+<div id="refineBody"></div><button class="main-btn" style="background:linear-gradient(135deg,var(--sky),var(--terra));" onclick="checkSection('refine')">✓ Check Section 3</button><div class="score" id="sc-refine"></div></div></div>
+
+<!-- 4 PARAPHRASE & UPGRADE -->
+<div class="sec"><div class="sec-top"><span class="s-badge" style="background:var(--amber);">4</span><h2>Paraphrase &amp; Upgrade</h2><span class="pts">6 items</span></div>
+<div class="sec-body"><div class="instr">Rewrite each plain sentence at a more precise, formal register. There's no single correct answer — write your version, then reveal a model and rate yourself honestly.</div>
+<div id="paraBody"></div></div></div>
+
+<!-- 5 INFERENCE READING -->
+<div class="sec"><div class="sec-top"><span class="s-badge" style="background:var(--terra);">5</span><h2>Reading — Inference</h2><span class="pts">8 questions</span></div>
+<div class="sec-body">
+<div class="reading">Artificial intelligence has begun to reshape the practice of science itself. Algorithms can now sift through decades of published research in minutes, flagging patterns that might take a human researcher years to notice — and, proponents argue, this could dramatically shorten the path from hypothesis to discovery. Yet the same systems that promise speed also introduce a curious blind spot: a model trained on existing literature will, almost by definition, be better at confirming what is already suspected than at recognising the genuinely unexpected. Some laboratories have begun treating AI-generated hypotheses with the same scepticism once reserved for anecdotal evidence, insisting on independent replication before any claim is taken seriously. Whether this caution will hold as funding pressures mount, and as the temptation to publish faster grows, is far from certain. What is clear is that the scientists best placed to benefit from these tools will not be those who trust them uncritically, but those who understand precisely where their judgement is still required.</div>
+<div class="instr">None of these answers are stated directly — you'll need to infer them from tone, word choice and structure.</div>
+<div id="mcqBody"></div><button class="main-btn" style="background:linear-gradient(135deg,var(--terra),var(--sage));" onclick="checkSection('mcq')">✓ Check Section 5</button><div class="score" id="sc-mcq"></div></div></div>
+
+<!-- 6 ARGUMENTATION -->
+<div class="sec"><div class="sec-top"><span class="s-badge" style="background:var(--sage);">6</span><h2>Argumentation</h2><span class="pts">8 prompts</span></div>
+<div class="sec-body"><div class="instr">Take a position on each and defend it. Your teacher may ask you to argue the opposite side afterward — be ready. Not scored.</div>
+<div id="discBody"></div></div></div>
+
+<!-- 7 TIMED SPEAKING -->
+<div class="sec"><div class="sec-top"><span class="s-badge" style="background:var(--violet);">7</span><h2>Timed Spontaneous Speaking</h2><span class="pts">6 prompts · 60s each</span></div>
+<div class="sec-body"><div class="instr">No preparation time. Press start, speak until the timer ends. The goal is fluency under pressure, not a perfect answer.</div>
+<div id="timerBody"></div></div></div>
+
+<!-- 8 GENRE-CONSTRAINED WRITING -->
+<div class="sec"><div class="sec-top"><span class="s-badge" style="background:var(--warm);">8</span><h2>Writing — Risk Memo</h2><span class="pts">200–250 words</span></div>
+<div class="sec-body">
+<div class="guide"><b>Task:</b> Write a short risk-summary memo to a non-technical company director, explaining the risks and benefits of introducing an AI-assisted hypothesis-generation tool into your R&amp;D lab. The director is busy, mildly sceptical of new technology, and will only read one page.<ol>
+<li>Open with the purpose of the memo in one sentence.</li>
+<li>Briefly state the main benefit.</li>
+<li>Briefly state the main risk.</li>
+<li>Address the director's likely scepticism directly.</li>
+<li>Avoid technical jargon — write for a non-specialist.</li>
+<li>End with a clear, single recommendation.</li>
+</ol></div>
+<textarea class="big" id="writing" oninput="updateWC()" placeholder="Start writing here..."></textarea>
+<div class="wc" id="wc">0 words</div>
+<div class="selfedit"><h4>Before you finish, check:</h4>
+<label><input type="checkbox"> Register is consistently professional and concise — no casual phrasing.</label>
+<label><input type="checkbox"> No sentence runs longer than about 25 words.</label>
+<label><input type="checkbox"> The recommendation is stated in exactly one clear sentence.</label>
+<label><input type="checkbox"> A non-technical reader could follow every sentence — no unexplained jargon.</label>
+<label><input type="checkbox"> Hedging language (might/could/perhaps) isn't overused.</label></div>
+</div></div>
+
+<div id="toast">✓ Saved!</div>
+<div class="savebar"><button class="reset" onclick="clearProgress()">Reset</button><button onclick="saveProgress()">Save Progress</button></div>
+</div>
+
+<script>
+const BR_AM={'organise':'organize','organised':'organized','colour':'color','favourite':'favorite','centre':'center','practise':'practice','travelled':'traveled','cancelled':'canceled','realise':'realize','realised':'realized','recognise':'recognize','analyse':'analyze','licence':'license','defence':'defense','programme':'program','labour':'labor','behaviour':'behavior','scepticism':'skepticism','sceptical':'skeptical','recognising':'recognizing'};
+function norm(s){let t=s.trim().toLowerCase().replace(/\s+/g,' ').replace(/[\u2018\u2019]/g,"'");Object.keys(BR_AM).forEach(b=>{t=t.replace(new RegExp('\\b'+b+'\\b','g'),BR_AM[b]);});return t;}
+function mark(el,ok){el.classList.toggle('ok',ok);el.classList.toggle('no',!ok);}
+
+/* ===== SECTION 1: MATCH ===== */
+const MATCH=[
+{n:1,txt:'flag up',ans:'D'},
+{n:2,txt:'escalate',ans:'G'},
+{n:3,txt:'raise a concern',ans:'A'},
+{n:4,txt:'sound the alarm',ans:'H'},
+{n:5,txt:'flag a discrepancy',ans:'C'},
+{n:6,txt:'voice reservations',ans:'F'},
+{n:7,txt:'push back on',ans:'B'},
+{n:8,txt:'table a proposal',ans:'J'},
+{n:9,txt:'shelve an idea',ans:'E'},
+{n:10,txt:'circle back',ans:'I'}];
+const DEFS={
+A:'a neutral, everyday way to mention a concern in almost any context',
+B:'actively resist or argue against a decision or plan',
+C:'point out a specific mismatch in data or numbers in a technical report',
+D:'an informal way to mention a small issue to a colleague in passing',
+E:'decide not to pursue an idea for now, without rejecting it permanently',
+F:'express polite disagreement or hesitation in a meeting',
+G:'formally pass an issue up to someone with the authority to decide',
+H:'highlight a genuinely urgent or dangerous issue immediately',
+I:'return to a topic later after other matters have been addressed',
+J:'formally put an idea forward for group discussion'};
+
+/* ===== SECTION 2: TRANSFORMATION ===== */
+const TRANS=[
+{n:1,txt:'The committee rejected the proposal because it lacked sufficient evidence.',key:'DOWN',ans:['the committee turned the proposal down because it lacked sufficient evidence.','the committee turned down the proposal because it lacked sufficient evidence.','the committee turned down the proposal due to a lack of sufficient evidence.'],hint:'"Turn down" is a phrasal verb meaning "reject".'},
+{n:2,txt:'It is likely that stricter regulations will be introduced next year.',key:'EXPECTED',ans:['stricter regulations are expected to be introduced next year.'],hint:'Use the passive: "...are expected to be..."'},
+{n:3,txt:'Despite the risks, the team decided to proceed with the trial.',key:'NOTWITHSTANDING',ans:['notwithstanding the risks, the team decided to proceed with the trial.'],hint:'"Notwithstanding" works like "despite" but is more formal.'},
+{n:4,txt:'Many scientists believe that funding priorities should change.',key:'VIEW',ans:['many scientists are of the view that funding priorities should change.'],hint:'Fixed phrase: "to be of the view that..."'},
+{n:5,txt:'The report was criticized for being overly optimistic.',key:'CAME',ans:['the report came under criticism for being overly optimistic.'],hint:'Fixed phrase: "to come under criticism".'},
+{n:6,txt:'As soon as the data was released, questions were raised about its accuracy.',key:'NO',ans:['no sooner had the data been released than questions were raised about its accuracy.'],hint:'Inversion structure: "No sooner had... than..."'},
+{n:7,txt:"It's possible that the results were influenced by bias.",key:'MAY',ans:['the results may have been influenced by bias.'],hint:'Modal of past possibility: "may have been..."'},
+{n:8,txt:'The company only admitted the error after the media reported it.',key:'UNTIL',ans:['the company did not admit the error until the media reported it.'],hint:'Restructure with "not... until".'}];
+
+/* ===== SECTION 3: REFINE ===== */
+const REFINE=[
+{n:1,wrong:'I am very interested about the results of this study.',ans:['i am very interested in the results of this study.'],hint:'Fixed preposition: "interested in", not "about".'},
+{n:2,wrong:'In my opinion, I think the policy is flawed.',ans:['in my opinion, the policy is flawed.','i think the policy is flawed.'],hint:'You are stating your opinion twice — keep only one.'},
+{n:3,wrong:'The results were very unique.',ans:['the results were highly unusual.','the results were unique.'],hint:'"Unique" is not usually gradable — either drop "very" or choose a gradable word.'},
+{n:4,wrong:'We need to discuss about this further.',ans:['we need to discuss this further.'],hint:'"Discuss" takes a direct object — no preposition needed.'},
+{n:5,wrong:'The experiment was successful, however it raised new questions.',ans:['the experiment was successful; however, it raised new questions.','the experiment was successful, but it raised new questions.'],hint:'"However" mid-sentence like this needs a semicolon, or swap it for "but".'},
+{n:6,wrong:'He is agree with the proposed changes.',ans:['he agrees with the proposed changes.'],hint:'"Agree" is a verb, not an adjective — no "is" needed.'},
+{n:7,wrong:'The findings are quite similar than the previous study.',ans:['the findings are quite similar to the previous study.'],hint:'Fixed pattern: "similar to", not "similar than".'},
+{n:8,wrong:'It would be better if we will wait for more data.',ans:['it would be better if we waited for more data.'],hint:'After "if" in a second conditional, use the past simple, not "will".'}];
+
+/* ===== SECTION 4: PARAPHRASE (self-assess) ===== */
+const PARA=[
+{n:1,txt:"A lot of people are worried about how AI will affect jobs.",model:"There is growing public concern over the impact artificial intelligence may have on employment."},
+{n:2,txt:"Some scientists don't agree with using gene editing in humans.",model:"A number of scientists remain opposed to the application of gene-editing technology in humans."},
+{n:3,txt:"The company said sorry for the mistake but didn't explain why it happened.",model:"The company issued an apology for the error but offered no explanation as to its cause."},
+{n:4,txt:"This plan might work, but there are a few problems with it.",model:"While the plan is not without merit, it is not without its shortcomings either."},
+{n:5,txt:"We don't have enough proof to say this is true.",model:"The available evidence is insufficient to substantiate this claim."},
+{n:6,txt:"It's hard to know if this will really change things.",model:"It remains to be seen whether this will bring about any meaningful change."}];
+
+/* ===== SECTION 5: INFERENCE MCQ ===== */
+const MCQ=[
+{n:1,txt:"The author's overall tone toward AI in science could best be described as:",opts:['Enthusiastic and uncritical','Dismissive of its value','Cautiously balanced','Alarmed and pessimistic'],ans:2},
+{n:2,txt:'The phrase "a curious blind spot" implies that:',opts:['AI systems have no real weaknesses','The author finds this limitation somewhat unexpected given AI\'s strengths','Blind spots are a minor, unimportant bug','AI cannot process large amounts of data'],ans:1},
+{n:3,txt:'What can be inferred about labs requiring independent replication of AI hypotheses?',opts:['They fully trust AI-generated hypotheses','They are applying traditional scientific rigour to a new kind of tool','They have stopped using AI altogether','They are legally required to do so'],ans:1},
+{n:4,txt:'The author suggests that AI is particularly good at:',opts:['Discovering entirely new phenomena','Confirming what is already suspected','Replacing human judgement entirely','Reducing funding pressure'],ans:1},
+{n:5,txt:'The final sentence implies that the most successful scientists will be those who:',opts:['Avoid AI tools entirely','Use AI without question','Understand the limits of what AI can judge','Publish as quickly as possible'],ans:2},
+{n:6,txt:'What does the passage suggest might undermine scientific caution around AI?',opts:['A lack of funding for AI research','Pressure to publish quickly','Public criticism of AI','Government regulation'],ans:1},
+{n:7,txt:'The word "proponents" in paragraph one refers to people who:',opts:['Oppose using AI in research','Support and advocate for AI in research','Study AI purely academically','Regulate AI use'],ans:1},
+{n:8,txt:"Which best summarises the author's main argument?",opts:['AI will replace scientists within a decade','AI is unreliable and should not be used in research','AI is powerful but limited, and requires informed scepticism','AI has already solved most scientific problems'],ans:2}];
+
+/* ===== SECTION 6: DISCUSSION ===== */
+const DISC=[
+'Should AI-generated scientific hypotheses be trusted with the same weight as human-generated ones? Take a position and defend it.',
+"Is it ethical to publish research findings faster, even if it means less rigorous verification? Argue for or against.",
+'Who should be held accountable if an AI tool contributes to a flawed scientific conclusion — the researcher, the developer, or the institution?',
+'Does the pressure to publish quickly threaten the integrity of scientific research more than AI does?',
+'Should governments regulate how AI is used in scientific research, or should this be left to the scientific community?',
+'Is scepticism toward new technology generally a strength or a weakness in a professional environment?',
+'Can a tool that is "better at confirming what is already suspected" ever lead to a genuine breakthrough?',
+"Argue the counter-position: that AI's blind spot toward the unexpected is actually a strength, not a weakness."];
+
+/* ===== SECTION 7: TIMED SPEAKING ===== */
+const TIMED=[
+'Explain the main argument of the reading passage in your own words.',
+"Defend the statement: 'Caution should always come before speed in science.'",
+'Respond immediately: an AI tool has just flagged a result you find suspicious — what do you say to your team?',
+'Argue the opposite position from the one you just gave.',
+'Summarise, in one sentence, why AI might make a bad scientist as well as a good one.',
+'You have 60 seconds to convince a sceptical colleague to trust an AI-assisted finding.'];
+
+/* ===== RENDER ===== */
+function renderMatch(){
+  const c=document.getElementById('matchBody');
+  const letters=Object.keys(DEFS).sort(()=>Math.random()-0.5);
+  MATCH.forEach(it=>{const d=document.createElement('div');d.className='row';
+  const opts='<option value="">–</option>'+letters.map(l=>`<option value="${l}">${l}) ${DEFS[l]}</option>`).join('');
+  d.innerHTML=`<p class="txt">${it.n}. ${it.txt}</p><select class="sel" id="match_${it.n}">${opts}</select>`;c.appendChild(d);});
+}
+function renderTrans(){
+  const c=document.getElementById('transBody');
+  TRANS.forEach(it=>{const d=document.createElement('div');d.className='item';
+  d.innerHTML=`<div class="n">Item ${it.n}</div><div class="txt">${it.txt} <span class="key">${it.key}</span></div><input class="inp" id="trans_${it.n}" autocomplete="off" autocorrect="off" spellcheck="false" placeholder="Your answer..."><button class="chk" onclick="chkItem('trans',${it.n})">✓ Check</button><div class="hint" id="hint-trans_${it.n}"></div>`;c.appendChild(d);});
+}
+function renderRefine(){
+  const c=document.getElementById('refineBody');
+  REFINE.forEach(it=>{const d=document.createElement('div');d.className='item';
+  d.innerHTML=`<div class="n">Sentence ${it.n}</div><div class="txt">${it.wrong}</div><input class="inp" id="refine_${it.n}" autocomplete="off" autocorrect="off" spellcheck="false" placeholder="Your refined version..."><button class="chk" onclick="chkItem('refine',${it.n})">✓ Check</button><div class="hint" id="hint-refine_${it.n}"></div>`;c.appendChild(d);});
+}
+function renderPara(){
+  const c=document.getElementById('paraBody');
+  PARA.forEach(it=>{const d=document.createElement('div');d.className='para-block';
+  d.innerHTML=`<div class="n" style="font-size:10px;font-weight:800;color:var(--muted);text-transform:uppercase;margin-bottom:4px;">Item ${it.n}</div><div class="txt" style="font-size:13px;font-weight:700;">${it.txt}</div><textarea id="para_${it.n}" placeholder="Your upgraded version..."></textarea><button class="ex-btn" onclick="toggleEx(${it.n})">💡 Show model</button><div class="example" id="ex-para_${it.n}">${it.model}</div><div class="selfrate" id="rate_${it.n}"><button onclick="setRate(${it.n},'close',this)">Close to this</button><button onclick="setRate(${it.n},'partial',this)">Partly there</button><button onclick="setRate(${it.n},'more',this)">Needs more work</button></div>`;c.appendChild(d);});
+}
+function renderMcq(){
+  const c=document.getElementById('mcqBody');
+  MCQ.forEach(it=>{const d=document.createElement('div');d.className='mcq';
+  let opts=it.opts.map((o,i)=>`<label id="mcq_${it.n}_${i}" onclick="pickMcq(${it.n},${i})"><input type="radio" name="mcq_${it.n}"> ${o}</label>`).join('');
+  d.innerHTML=`<div class="txt">${it.n}. ${it.txt}</div>${opts}`;c.appendChild(d);});
+}
+function pickMcq(n,i){
+  document.querySelectorAll(`[id^="mcq_${n}_"]`).forEach(l=>l.classList.remove('picked','ok','no'));
+  document.getElementById(`mcq_${n}_${i}`).classList.add('picked');
+  document.getElementById(`mcq_${n}_${i}`).dataset.picked='1';
+  document.querySelector(`input[name="mcq_${n}"]:checked`);
+}
+function renderDisc(){const c=document.getElementById('discBody');DISC.forEach((q,i)=>{const d=document.createElement('div');d.className='disc';d.textContent=(i+1)+'. '+q;c.appendChild(d);});}
+function renderTimed(){
+  const c=document.getElementById('timerBody');
+  TIMED.forEach((q,i)=>{const n=i+1;const d=document.createElement('div');d.className='timer-block';
+  d.innerHTML=`<div class="txt">${n}. ${q}</div><div class="timer-row"><span class="timer-disp" id="td_${n}">0:60</span><button class="timer-btn" id="tb_${n}" onclick="startTimer(${n})">▶ Start</button></div>`;c.appendChild(d);});
+}
+let timers={};
+function startTimer(n){
+  if(timers[n])return;
+  let t=60;const disp=document.getElementById('td_'+n);const btn=document.getElementById('tb_'+n);
+  btn.disabled=true;
+  timers[n]=setInterval(()=>{t--;const m=Math.floor(t/60);const s=t%60;disp.textContent=m+':'+String(s).padStart(2,'0');
+  if(t<=0){clearInterval(timers[n]);delete timers[n];disp.textContent='Done!';btn.disabled=false;btn.textContent='↻ Again';}},1000);
+}
+
+/* ===== CHECK ===== */
+function chkItem(type,n){
+  const data=type==='trans'?TRANS:REFINE;
+  const it=data.find(x=>x.n===n);
+  const el=document.getElementById(type+'_'+n);
+  const ok=it.ans.some(a=>norm(a)===norm(el.value));
+  mark(el,ok);
+  const h=document.getElementById('hint-'+type+'_'+n);
+  if(!ok){h.textContent='💡 '+it.hint;h.classList.add('show');}else{h.classList.remove('show');}
+  return ok;
+}
+function checkSection(sec){
+  let ok=0,total=0;
+  if(sec==='trans'||sec==='refine'){const d=sec==='trans'?TRANS:REFINE;total=d.length;d.forEach(it=>{if(chkItem(sec,it.n))ok++;});}
+  else if(sec==='match'){total=MATCH.length;MATCH.forEach(it=>{const el=document.getElementById('match_'+it.n);const g=el.value===it.ans;el.classList.toggle('ok',g);el.classList.toggle('no',!g&&el.value!=='');if(g)ok++;});}
+  else if(sec==='mcq'){total=MCQ.length;MCQ.forEach(it=>{
+    const picked=document.querySelector(`#mcqBody [id^="mcq_${it.n}_"].picked`);
+    document.querySelectorAll(`[id^="mcq_${it.n}_"]`).forEach(l=>l.classList.remove('ok','no'));
+    if(picked){const idx=parseInt(picked.id.split('_')[2]);const g=idx===it.ans;
+    document.getElementById(`mcq_${it.n}_${it.ans}`).classList.add('ok');
+    if(!g)picked.classList.add('no');
+    if(g)ok++;}
+  });}
+  const pct=Math.round(ok/total*100);
+  const el=document.getElementById('sc-'+sec);
+  el.innerHTML=`<div class="sc-n">${ok}<span>/${total}</span></div><div class="sc-t">${pct>=80?'Excellent!':pct>=60?'Good job!':'Keep trying!'}</div><p class="sc-b">${pct>=80?'Great work — well done!':'Check the hints/correct answers and try again.'}</p>`;
+  el.classList.add('show');el.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+function toggleEx(n){document.getElementById('ex-para_'+n).classList.toggle('show');}
+function setRate(n,val,btn){const w=document.getElementById('rate_'+n);[...w.children].forEach(b=>b.classList.remove('sel'));btn.classList.add('sel');}
+
+function updateWC(){const t=document.getElementById('writing').value.trim();const w=t.length?t.split(/\s+/).length:0;const e=document.getElementById('wc');e.textContent=w+' words'+(w<200?' (aim for 200–250)':' ✓ Target reached');e.classList.toggle('done',w>=200);}
+
+function saveProgress(){const s={i:{},c:{},sel:{}};
+document.querySelectorAll('input.inp,textarea').forEach(e=>{if(e.id)s.i[e.id]=e.value;});
+document.querySelectorAll('input[type=checkbox]').forEach((e,i)=>{s.c[i]=e.checked;});
+document.querySelectorAll('select').forEach(e=>{s.sel[e.id]=e.value;});
+try{localStorage.setItem('seda_w1_pilot_lesson',JSON.stringify(s));const t=document.getElementById('toast');t.style.opacity='1';setTimeout(()=>t.style.opacity='0',1800);}catch(e){}}
+function loadProgress(){try{const r=localStorage.getItem('seda_w1_pilot_lesson');if(!r)return;const s=JSON.parse(r);
+if(s.i)Object.entries(s.i).forEach(([k,v])=>{const e=document.getElementById(k);if(e)e.value=v;});
+if(s.sel)Object.entries(s.sel).forEach(([k,v])=>{const e=document.getElementById(k);if(e)e.value=v;});
+if(s.c)document.querySelectorAll('input[type=checkbox]').forEach((e,i)=>{if(s.c[i])e.checked=true;});
+updateWC();}catch(e){}}
+function clearProgress(){if(confirm('Clear all saved progress?')){localStorage.removeItem('seda_w1_pilot_lesson');location.reload();}}
+
+renderMatch();renderTrans();renderRefine();renderPara();renderMcq();renderDisc();renderTimed();
+document.addEventListener('input',saveProgress);
+document.addEventListener('change',saveProgress);
+loadProgress();
+</script>
+</body>
+</html>
